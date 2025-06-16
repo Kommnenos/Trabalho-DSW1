@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.ufscar.dc.dsw.domain.Editora;
+import br.ufscar.dc.dsw.domain.Loja;
 import br.ufscar.dc.dsw.domain.Veiculo;
-import br.ufscar.dc.dsw.service.spec.IEditoraService;
+import br.ufscar.dc.dsw.service.spec.ILojaService;
 import br.ufscar.dc.dsw.service.spec.IVeiculoService;
 
 @Controller
@@ -28,7 +28,7 @@ public class VeiculoController {
 	private IVeiculoService veiculoService;
 
 	@Autowired
-	private IEditoraService editoraService;
+	private ILojaService lojaService;
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Veiculo veiculo) {
@@ -78,8 +78,8 @@ public class VeiculoController {
 		return "redirect:/veiculos/listar";
 	}
 
-	@ModelAttribute("editoras")
-	public List<Editora> listaEditoras() {
-		return editoraService.buscarTodos();
+	@ModelAttribute("lojas")
+	public List<Loja> listaLojas() {
+		return lojaService.buscarTodos();
 	}
 }
