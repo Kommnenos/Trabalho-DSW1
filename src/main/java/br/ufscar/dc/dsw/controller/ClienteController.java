@@ -46,7 +46,7 @@ public class ClienteController {
 
 		System.out.println("senha = " + cliente.getSenha());
 
-		cliente.setPassword(encoder.encode(cliente.getSenha()));
+		cliente.setSenha(encoder.encode(cliente.getSenha()));
 		service.salvar(cliente);
 		attr.addFlashAttribute("success", "Cliente inserido com sucesso.");
 		return "redirect:/cliente/listar";

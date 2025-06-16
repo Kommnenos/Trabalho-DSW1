@@ -51,6 +51,10 @@ public class Cliente {
 	@Column(nullable = false, length= 20)
 	private LocalDate dataNasc;
 
+	@NotBlank
+	@Column(nullable = false, length = 10)
+	private String role;
+	
 	@Column(nullable = false)
     private boolean enabled;
 
@@ -119,6 +123,14 @@ public class Cliente {
 	public void setDataNasc(LocalDate dataNasc) {
 		this.dataNasc = dataNasc;
 	}
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	public boolean isEnabled() {
 		return enabled;
@@ -127,4 +139,6 @@ public class Cliente {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+	
+	
 }
