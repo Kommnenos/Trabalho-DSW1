@@ -51,6 +51,11 @@ public class Veiculo extends AbstractEntity<Long> {
 	@Column(nullable = false, columnDefinition = "DECIMAL(8,2) DEFAULT 0.0")
 	private BigDecimal valor;
 
+	@NotNull(message = "{NotNull.veiculo.loja}")
+	@ManyToOne
+	@JoinColumn(name = "loja")
+	private Loja loja;
+
 	public String getCNPJloja() {
 		return cnpj_loja;
 	}
@@ -113,6 +118,14 @@ public class Veiculo extends AbstractEntity<Long> {
 
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
+	}
+
+	public Loja getLoja() {
+		return loja;
+	}
+
+	public void setLoja(Loja loja) {
+		this.loja = loja;
 	}
 
 }
