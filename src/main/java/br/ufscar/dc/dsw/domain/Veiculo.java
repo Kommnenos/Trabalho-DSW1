@@ -2,11 +2,7 @@ package br.ufscar.dc.dsw.domain;
 
 import java.math.BigDecimal;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,6 +11,7 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "Veiculo")
 public class Veiculo extends AbstractEntity<Long> {
+
 
 	@NotBlank(message = "{NotBlank.veiculo.cnpj_loja}")
 	@Size(max = 60)
@@ -31,6 +28,7 @@ public class Veiculo extends AbstractEntity<Long> {
 	@Column(nullable = false, length = 60)
 	private String modelo;
 
+	@Id
 	@NotBlank(message = "{NotBlank.veiculo.chassi}")
 	@Size(max = 60)
 	@Column(nullable = false, length = 60)
@@ -85,7 +83,7 @@ public class Veiculo extends AbstractEntity<Long> {
 		this.chassi = chassi;
 	}
 
-	public Integer getAno() {
+	public @NotBlank(message = "{NotBlank.veiculo.cnpj_loja}") @Size(max = 60) String getAno() {
 		return cnpj_loja;
 	}
 

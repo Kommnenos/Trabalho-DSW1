@@ -16,7 +16,7 @@ import br.ufscar.dc.dsw.domain.Loja;
 import br.ufscar.dc.dsw.service.spec.ILojaService;
 
 @Controller
-@RequestMapping("/lojas")
+@RequestMapping("/loja")
 public class LojaController {
 	
 	@Autowired

@@ -21,7 +21,7 @@ import br.ufscar.dc.dsw.service.spec.ILojaService;
 import br.ufscar.dc.dsw.service.spec.IVeiculoService;
 
 @Controller
-@RequestMapping("/veiculos")
+@RequestMapping("/veiculo")
 public class VeiculoController {
 
 	@Autowired

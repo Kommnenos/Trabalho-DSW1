@@ -2,10 +2,7 @@ package br.ufscar.dc.dsw.domain;
 
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -16,6 +13,7 @@ import br.ufscar.dc.dsw.validation.UniqueCNPJ;
 @Table(name = "Loja")
 public class Loja extends AbstractEntity<Long> {
 
+	@Id
 	@UniqueCNPJ (message = "{Unique.loja.CNPJ}")
 	@NotBlank
 	@Size(min = 18, max = 18, message = "{Size.loja.CNPJ}")
