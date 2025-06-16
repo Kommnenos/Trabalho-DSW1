@@ -10,9 +10,9 @@
 		</ul>
 
 		<ul class="nav nav-pills">
-			<li class="nav-item"><span class="nav-link active">Editoras</span></li>
+			<li class="nav-item"><span class="nav-link active" th:text="#{vendedoras.label}"></span></li>
 			<li class="nav-item"><a class="nav-link"
-				th:href="@{/editoras/cadastrar}"> <i class="oi oi-plus"></i> <span>Cadastrar</span>
+				th:href="@{/editoras/cadastrar}"> <i class="oi oi-plus"></i> <span th:text="#{cadastrar.label}">Cadastrar</span>
 			</a></li>
 			<li class="nav-item"><a class="nav-link"
 				th:href="@{/editoras/listar}"> <i class="oi oi-spreadsheet"></i>
@@ -23,7 +23,7 @@
 		<ul class="nav nav-pills">
 			<li class="nav-item"><span class="nav-link active">Livros</span></li>
 			<li class="nav-item"><a class="nav-link"
-				th:href="@{/livros/cadastrar}"> <i class="oi oi-plus"></i> <span>Cadastrar</span>
+				th:href="@{/livros/cadastrar}"> <i class="oi oi-plus"></i> <span th:text="#{cadastrar.label}">Cadastrar</span>
 			</a></li>
 			<li class="nav-item"><a class="nav-link" th:href="@{/livros/listar}">
 					<i class="oi oi-spreadsheet"></i> <span>Listar</span>
