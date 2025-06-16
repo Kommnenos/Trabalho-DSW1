@@ -28,7 +28,6 @@ public class Veiculo extends AbstractEntity<Long> {
 	@Column(nullable = false, length = 60)
 	private String modelo;
 
-	@Id
 	@NotBlank(message = "{NotBlank.veiculo.chassi}")
 	@Size(max = 60)
 	@Column(nullable = false, length = 60)
