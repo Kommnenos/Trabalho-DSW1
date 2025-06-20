@@ -35,24 +35,24 @@ public class Cliente extends AbstractEntity<Long> {
 	private String nome;
 
 	@NotBlank
-	@Size(min=11, max=11)
-	@Column(nullable = false, length=11)
+	@Size(min=14, max=14)
+	@Column(nullable = false, length=14)
 	private String CPF;
 
-	@Column(nullable = false, length= 15)
+	@Column(length=15)
 	private String telefone;
 
-	@Column(nullable = false, length= 1)
+	@Column(length= 1)
 	private String sexo;
 
-	@Column(nullable = false)
+	@Column
 	private LocalDate dataNasc;
 
 	@NotBlank
 	@Column(nullable = false, length = 10)
 	private String role;
 	
-	@Column(nullable = false)
+	@Column
     private boolean enabled;
 
 	public String getEmail() {
