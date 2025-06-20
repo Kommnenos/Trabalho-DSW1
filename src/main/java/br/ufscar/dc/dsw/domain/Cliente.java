@@ -17,14 +17,10 @@ import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "Cliente")
-public class Cliente {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Cliente extends AbstractEntity<Long> {
 
 	@NotBlank
 	@Column(nullable = false, length= 60)
@@ -39,7 +35,8 @@ public class Cliente {
 	private String nome;
 
 	@NotBlank
-	@Column(nullable = false, length= 11)
+	@Size(min=11, max=11)
+	@Column(nullable = false, length=11)
 	private String CPF;
 
 	@Column(nullable = false, length= 15)
@@ -48,7 +45,7 @@ public class Cliente {
 	@Column(nullable = false, length= 1)
 	private String sexo;
 
-	@Column(nullable = false, length= 20)
+	@Column(nullable = false)
 	private LocalDate dataNasc;
 
 	@NotBlank
@@ -57,16 +54,6 @@ public class Cliente {
 	
 	@Column(nullable = false)
     private boolean enabled;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
 
 	public String getEmail() {
 		return email;
