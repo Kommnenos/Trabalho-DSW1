@@ -21,6 +21,11 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
+
+        if (lojaDao == null || clienteDao == null || email == null) {
+            return true;
+        }
+
         boolean emailExisteLoja = lojaDao.getLojaByEmail(email) != null;
         boolean emailExisteCliente = clienteDao.getClienteByEmail(email) != null;
 
