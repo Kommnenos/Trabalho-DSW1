@@ -18,7 +18,7 @@ import br.ufscar.dc.dsw.service.spec.ILojaService;
 
 @Controller
 @RequestMapping("/loja")
-public class LojaController {
+public class LojaPublicController {
 	
 	@Autowired
 	private ILojaService service;
@@ -31,12 +31,7 @@ public class LojaController {
 		return "loja/cadastro";
 	}
 	
-	@GetMapping("/listar")
-	public String listar(ModelMap model) {
-		model.addAttribute("lojas",service.buscarTodos());
-		return "loja/lista";
-	}
-	
+
 	@PostMapping("/salvar")
 	public String salvar(@Valid Loja loja, BindingResult result, RedirectAttributes attr) {
 		
@@ -50,35 +45,5 @@ public class LojaController {
 		attr.addFlashAttribute("success", "loja.create.success");
 		return "redirect:/login";
 	}
-	
-	@GetMapping("/editar/{id}")
-	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
-		model.addAttribute("loja", service.buscarPorId(id));
-		return "loja/cadastro";
-	}
-	
-	@PostMapping("/editar")
-	public String editar(@Valid Loja loja, BindingResult result, RedirectAttributes attr) {
-		
-		// Apenas rejeita se o problema não for com o CNPJ (CNPJ campo read-only) 
-		
-		if (result.getFieldErrorCount() > 1 || result.getFieldError("CNPJ") == null) {
-			return "loja/cadastro";
-		}
 
-		service.salvar(loja);
-		attr.addFlashAttribute("sucess", "loja.edit.sucess");
-		return "redirect:/lojas/listar";
-	}
-	
-	@GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, ModelMap model) {
-		if (service.lojaTemVeiculos(id)) {
-			model.addAttribute("fail", "loja.delete.fail");
-		} else {
-			service.excluir(id);
-			model.addAttribute("sucess", "loja.delete.sucess");
-		}
-		return listar(model);
-	}
 }

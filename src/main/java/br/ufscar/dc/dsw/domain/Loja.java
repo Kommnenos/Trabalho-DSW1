@@ -51,7 +51,7 @@ public class Loja extends AbstractEntity<Long> {
 
 
 	public Loja() {
-		this.role = "LOJA";
+		this.role = "ROLE_LOJA";
 	}
 
 

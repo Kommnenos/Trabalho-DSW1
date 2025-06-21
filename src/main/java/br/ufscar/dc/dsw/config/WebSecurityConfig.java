@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 import br.ufscar.dc.dsw.security.ClienteDetailsServiceImpl;
 import br.ufscar.dc.dsw.security.UsuarioDetailsServiceImpl;
@@ -40,6 +41,11 @@ public class WebSecurityConfig {
 	}
 
 	@Bean
+	public SpringSecurityDialect springSecurityDialect() {
+		return new SpringSecurityDialect();
+	}
+
+	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 				.authorizeHttpRequests((authz) -> authz
@@ -48,7 +54,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/cliente/cadastrar", "/cliente/salvar").permitAll()
 						.requestMatchers("/loja/cadastrar", "/loja/salvar").permitAll()
 						.requestMatchers("/compra/**").hasRole("USER")
-						.requestMatchers("/editora/**", "/livro/**", "/usuario/**").hasRole("ADMIN")
+						.requestMatchers("/admin/**" ).hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.formLogin((form) -> form
 						.loginPage("/login")

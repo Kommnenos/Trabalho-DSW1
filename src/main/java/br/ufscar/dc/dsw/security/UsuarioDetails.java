@@ -28,7 +28,7 @@ public class UsuarioDetails implements UserDetails {
         if (cliente != null) {
             return Arrays.asList(new SimpleGrantedAuthority(cliente.getRole()));
         } else {
-            return Arrays.asList(new SimpleGrantedAuthority("   LOJA"));
+            return Arrays.asList(new SimpleGrantedAuthority("ROLE_LOJA"));
         }
     }
 
