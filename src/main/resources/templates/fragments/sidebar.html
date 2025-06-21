@@ -9,6 +9,19 @@
 			</a></li>
 		</ul>
 
+		<!--	Clientes	-->
+		<ul class="nav nav-pills" sec:authorize="hasRole('ADMIN')">
+			<li class="nav-item"><span class="nav-link active" th:text="#{clientes.label}"></span></li>
+			<li class="nav-item"><a class="nav-link"
+									th:href="@{/loja/cadastrar}"> <i class="oi oi-plus"></i> <span th:text="#{cadastrar.label}">Cadastrar</span>
+			</a></li>
+			<li class="nav-item"><a class="nav-link"
+									th:href="@{/loja/listar}"> <i class="oi oi-spreadsheet"></i>
+				<span th:text="#{listar.label}">Listar</span>
+			</a></li>
+		</ul>
+
+		<!--	Lojas	-->
 		<ul class="nav nav-pills" sec:authorize="hasRole('ADMIN')">
 			<li class="nav-item"><span class="nav-link active" th:text="#{vendedoras.label}"></span></li>
 			<li class="nav-item"><a class="nav-link"
@@ -20,13 +33,19 @@
 			</a></li>
 		</ul>
 
-		<ul class="nav nav-pills" sec:authorize="hasRole('ADMIN')">
+		<!--	Carros	-->
+		<ul class="nav nav-pills" >
 			<li class="nav-item"><span class="nav-link active" th:text="#{carros.label}">Carros</span></li>
-			<li class="nav-item"><a class="nav-link"
-				th:href="@{/veiculo/cadastrar}"> <i class="oi oi-plus"></i> <span th:text="#{cadastrar.label}">Cadastrar</span>
+			<li class="nav-item" sec:authorize="hasRole('LOJA')"><a class="nav-link"
+																	th:href="@{/veiculo/cadastrar}"> <i class="oi oi-plus"></i> <span th:text="#{cadastrar.label}">Cadastrar</span>
 			</a></li>
-			<li class="nav-item"><a class="nav-link" th:href="@{/veiculo/listar}">
-					<i class="oi oi-spreadsheet"></i> <span th:text="#{listar.label}">Listar</span>
+			<li class="nav-item" sec:authorize="hasRole('LOJA')"><a class="nav-link" th:href="@{/veiculo/listar}">
+				<i class="oi oi-spreadsheet"></i> <span th:text="#{listar.label}">Listar</span>
+			</a></li>
+
+			<li class="nav-item">
+				<a class="nav-link" th:href="@{/veiculo/listar}">
+					<i class="oi oi-spreadsheet"></i> <span>Listar Todos</span>
 			</a></li>
 		</ul>
 	</nav>
