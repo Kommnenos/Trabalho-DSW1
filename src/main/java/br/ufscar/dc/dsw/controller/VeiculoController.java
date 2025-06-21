@@ -49,8 +49,8 @@ public class VeiculoController {
 		}
 
 		veiculoService.salvar(veiculo);
-		attr.addFlashAttribute("sucess", "veiculo.create.sucess");
-		return "redirect:/veiculos/listar";
+		attr.addFlashAttribute("success", "veiculo.create.success");
+		return "redirect:/veiculo/listar";
 	}
 
 	@GetMapping("/editar/{id}")
@@ -67,19 +67,19 @@ public class VeiculoController {
 		}
 
 		veiculoService.salvar(veiculo);
-		attr.addFlashAttribute("sucess", "veiculo.edit.sucess");
-		return "redirect:/veiculos/listar";
+		attr.addFlashAttribute("success", "veiculo.edit.success");
+		return "redirect:/veiculo/listar";
 	}
 
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		veiculoService.excluir(id);
-		attr.addFlashAttribute("sucess", "veiculo.delete.sucess");
-		return "redirect:/veiculos/listar";
+		attr.addFlashAttribute("success", "veiculo.delete.success");
+		return "redirect:/veiculo/listar";
 	}
 
-	@ModelAttribute("lojas")
-	public List<Loja> listaLojas() {
-		return lojaService.buscarTodos();
+	@ModelAttribute("veiculos")
+	public List<Veiculo> listaVeiculos() {
+		return veiculoService.buscarTodos();
 	}
 }
