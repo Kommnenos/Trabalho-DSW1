@@ -43,12 +43,12 @@ public class Veiculo extends AbstractEntity<Long> {
 	private String descricao;
 	
 	@NotNull(message = "{NotNull.veiculo.valor}")
-	@Column(nullable = false, columnDefinition = "DECIMAL(8,2) DEFAULT 0.0")
+	@Column(nullable = false, precision = 8, scale = 2)
 	private BigDecimal valor;
 
 	@NotNull(message = "{NotNull.veiculo.loja}")
 	@ManyToOne
-	@JoinColumn(name = "cnpj_loja")
+	@JoinColumn(name = "loja_id")
 	private Loja loja;
 
 	public String getPlaca() {
