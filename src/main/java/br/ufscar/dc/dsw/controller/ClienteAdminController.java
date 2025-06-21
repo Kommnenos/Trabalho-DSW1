@@ -1,7 +1,8 @@
 package br.ufscar.dc.dsw.controller;
 
+import br.ufscar.dc.dsw.domain.Cliente;
+import br.ufscar.dc.dsw.service.spec.IClienteService;
 import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,12 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.ufscar.dc.dsw.domain.Cliente;
-import br.ufscar.dc.dsw.service.spec.IClienteService;
-
 @Controller
-@RequestMapping("/cliente")
-public class ClienteController {
+@RequestMapping("/admin/cliente")
+public class ClienteAdminController {
 
 	@Autowired
 	private IClienteService service;
@@ -27,8 +25,8 @@ public class ClienteController {
 	private BCryptPasswordEncoder encoder;
 
 	@GetMapping("/cadastrar")
-	public String cadastrar(ModelMap model) {
-		model.addAttribute("cliente", new Cliente());
+	public String cadastrar(Cliente cliente) {
+		//model.addAttribute("cliente", new Cliente());
 		return "cliente/cadastro";
 	}
 
@@ -69,7 +67,7 @@ public class ClienteController {
 		}
 
 		System.out.println(cliente.getSenha());
-
+		cliente.setSenha(encoder.encode(cliente.getSenha()));
 		service.salvar(cliente);
 		attr.addFlashAttribute("success", "Cliente editado com sucesso.");
 		return "redirect:/cliente/listar";

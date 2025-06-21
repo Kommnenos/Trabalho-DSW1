@@ -1,10 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate="~{layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
 </head>
 <body>
+<section class="layout-content" layout:fragment="corpo">
 
+    <nav class="navbar navbar-expand-md bg-light">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active"><i class="oi oi-caret-right"></i>
+                    <span th:text="#{loja.cadastrar.label}"></span></li>
+            </ul>
+            <a class="btn btn-primary btn-md" th:href="@{/loja/listar}" role="button">
+                <span class="oi oi-spreadsheet" title="Listar" aria-hidden="true"></span>
+                <span th:text="#{loja.listar.label}"></span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container" id="cadastro">
+
+        <div th:replace="~{fragments/alert}"></div>
+
+        <form th:action="${loja.id == null} ? @{/loja/salvar} : @{/loja/editar}" th:object="${loja}" method="POST">
+
+            <div class="form-row">
+
+                <div class="form-group col-md-6">
+                    <label th:text="#{loja.email.label}" for="email"></label>
+                    <input type="email" class="form-control" id="email" th:field="*{email}"
+                           th:classappend="${#fields.hasErrors('email')} ? is-invalid" />
+                    <div class="invalid-feedback">
+                        <span th:errors="*{email}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label th:text="#{loja.CNPJ.label}" for="CNPJ"></label>
+                    <input type="text" class="form-control" id="CNPJ" th:field="*{CNPJ}"
+                           placeholder="__.___.___/____-__" data-mask="00.000.000/0000-00"
+                           th:classappend="${#fields.hasErrors('CNPJ')} ? is-invalid" />
+                    <div class="invalid-feedback">
+                        <span th:errors="*{CNPJ}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label th:text="#{loja.senha.label}" for="senha"></label>
+                    <input type="password" class="form-control" id="senha" th:field="*{senha}"
+                           th:classappend="${#fields.hasErrors('senha')} ? is-invalid" />
+                    <div class="invalid-feedback">
+                        <span th:errors="*{senha}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label th:text="#{loja.nome.label}" for="nome"></label>
+                    <input type="text" class="form-control" id="nome" th:field="*{nome}"
+                           th:classappend="${#fields.hasErrors('nome')} ? is-invalid" />
+                    <div class="invalid-feedback">
+                        <span th:errors="*{nome}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label th:text="#{loja.descricao.label}" for="descricao"></label>
+                    <textarea class="form-control" id="descricao" th:field="*{descricao}" rows="3"
+                              th:classappend="${#fields.hasErrors('descricao')} ? is-invalid"></textarea>
+                    <div class="invalid-feedback">
+                        <span th:errors="*{descricao}"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <input type="hidden" id="id" th:field="*{id}" />
+            <button type="submit" th:text="#{button.salvar.label}" class="btn btn-primary btn-sm"></button>
+
+        </form>
+    </div>
+</section>
 </body>
 </html>
