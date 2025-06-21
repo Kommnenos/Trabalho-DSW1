@@ -25,21 +25,21 @@ import org.springframework.format.annotation.NumberFormat.Style;
 public class Cliente extends AbstractEntity<Long> {
 
 	@UniqueEmail
-	@NotBlank
+	@NotBlank (message = "{NotBlank.email}")
 	@Column(nullable = false, unique = true, length= 60)
 	private String email;
 
-	@NotBlank
+	@NotBlank (message = "{NotBlank.senha}")
 	@Column(nullable = false, length= 64)
 	private String senha;
 
-	@NotBlank
+	@NotBlank (message = "{NotBlank.cliente.nome}")
 	@Column(nullable = false, length= 60)
 	private String nome;
 
 	@UniqueCPF
-	@NotBlank
-	@Size(min=14, max=14)
+	@NotBlank (message = "{NotBlank.cliente.CPF}")
+	@Size(min=14, max=14, message = "{Size.cliente.CPF}")
 	@Column(nullable = false, unique = true, length=14)
 	private String CPF;
 

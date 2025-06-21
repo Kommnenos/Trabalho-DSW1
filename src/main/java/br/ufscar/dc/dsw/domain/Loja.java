@@ -15,30 +15,30 @@ import br.ufscar.dc.dsw.validation.UniqueCNPJ;
 public class Loja extends AbstractEntity<Long> {
 
 	@UniqueCNPJ (message = "{Unique.loja.CNPJ}")
-	@NotBlank
+	@NotBlank (message = "{NotBlank.loja.CNPJ}")
 	@Size(min = 18, max = 18, message = "{Size.loja.CNPJ}")
 	@Column(nullable = false, unique = true, length = 60)
 	private String CNPJ;
 
 	@UniqueEmail
-	@NotBlank
+	@NotBlank (message = "{NotBlank.email}")
 	@Size(max = 60, message = "{Size.loja.email}")
 	@Column(nullable = false, unique = true, length = 60)
 	private String email;
 
-	@NotBlank
+	@NotBlank (message = "{NotBlank.senha}")
 	@Size(max = 60, message = "{Size.loja.senha}")
-	@Column(nullable = false, unique = true, length = 60)
+	@Column(nullable = false, length = 60)
 	private String senha;
 
-	@NotBlank
+	@NotBlank (message = "{NotBlank.loja.nome}")
 	@Size(max = 60, message = "{Size.loja.nome}")
 	@Column(nullable = false, unique = true, length = 60)
 	private String nome;
 
-	@NotBlank
+	@NotBlank (message = "{NotBlank.loja.descricao}")
 	@Size(max = 60, message = "{Size.loja.descricao}")
-	@Column(nullable = false, unique = true, length = 60)
+	@Column(nullable = false, length = 60)
 	private String descricao;
 
 	@NotBlank

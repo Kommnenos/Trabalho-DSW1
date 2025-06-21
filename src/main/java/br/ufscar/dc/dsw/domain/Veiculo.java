@@ -1,6 +1,8 @@
 package br.ufscar.dc.dsw.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -11,12 +13,6 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "Veiculo")
 public class Veiculo extends AbstractEntity<Long> {
-
-
-	@NotBlank(message = "{NotBlank.veiculo.cnpj_loja}")
-	@Size(max = 60)
-	@Column(nullable = false, length = 60)
-	private String cnpj_loja;
 
 	@NotBlank(message = "{NotBlank.veiculo.placa}")
 	@Size(max = 60)
@@ -52,16 +48,8 @@ public class Veiculo extends AbstractEntity<Long> {
 
 	@NotNull(message = "{NotNull.veiculo.loja}")
 	@ManyToOne
-	@JoinColumn(name = "loja")
+	@JoinColumn(name = "cnpj_loja")
 	private Loja loja;
-
-	public String getCNPJloja() {
-		return cnpj_loja;
-	}
-
-	public void setCNPJloja(String cnpj_loja) {
-		this.cnpj_loja = cnpj_loja;
-	}
 
 	public String getPlaca() {
 		return placa;
@@ -87,12 +75,12 @@ public class Veiculo extends AbstractEntity<Long> {
 		this.chassi = chassi;
 	}
 
-	public @NotBlank(message = "{NotBlank.veiculo.cnpj_loja}") @Size(max = 60) String getAno() {
-		return cnpj_loja;
-	}
-
 	public void setAno(Integer ano) {
 		this.ano = ano;
+	}
+
+	public Integer getAno() {
+		return ano;
 	}
 
 	public Integer getQuilometragem() {
@@ -126,5 +114,10 @@ public class Veiculo extends AbstractEntity<Long> {
 	public void setLoja(Loja loja) {
 		this.loja = loja;
 	}
+
+	public String getCNPJLoja(){
+		return loja.getCNPJ();
+	}
+
 
 }
