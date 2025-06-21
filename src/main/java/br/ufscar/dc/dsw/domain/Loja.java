@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.domain;
 
 import java.util.List;
 
+import br.ufscar.dc.dsw.validation.UniqueEmail;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -19,6 +20,7 @@ public class Loja extends AbstractEntity<Long> {
 	@Column(nullable = false, unique = true, length = 60)
 	private String CNPJ;
 
+	@UniqueEmail
 	@NotBlank
 	@Size(max = 60, message = "{Size.loja.email}")
 	@Column(nullable = false, unique = true, length = 60)

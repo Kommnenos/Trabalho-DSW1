@@ -10,7 +10,7 @@ import br.ufscar.dc.dsw.domain.Loja;
 import org.springframework.data.repository.query.Param;
 
 @SuppressWarnings("unchecked")
-public interface ILojaDAO extends CrudRepository<Loja, Long>{
+public interface  ILojaDAO extends CrudRepository<Loja, Long>{
 
 	Loja findById(long id);
 	Loja findByCNPJ (String CNPJ);

@@ -28,7 +28,6 @@ public class ClientePublicController {
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Cliente cliente) {
-		//model.addAttribute("cliente", new Cliente());
 		return "cliente/cadastro";
 	}
 

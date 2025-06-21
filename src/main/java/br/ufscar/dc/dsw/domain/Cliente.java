@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.domain;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import br.ufscar.dc.dsw.validation.UniqueEmail;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -22,8 +23,9 @@ import org.springframework.format.annotation.NumberFormat.Style;
 @Table(name = "Cliente")
 public class Cliente extends AbstractEntity<Long> {
 
+	@UniqueEmail
 	@NotBlank
-	@Column(nullable = false, length= 60)
+	@Column(nullable = false, unique = true, length= 60)
 	private String email;
 
 	@NotBlank
