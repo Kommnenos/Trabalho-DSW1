@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 
+import br.ufscar.dc.dsw.security.UsuarioDetails;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,8 @@ public class PropostaController {
     }
 
     private Cliente getCliente() {
-        ClienteDetails clienteDetails = (ClienteDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return clienteDetails.getCliente();
+        UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return usuarioDetails.getCliente();
     }
 
     @GetMapping("/listar")
