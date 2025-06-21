@@ -27,7 +27,8 @@ public class ClienteController {
 	private BCryptPasswordEncoder encoder;
 
 	@GetMapping("/cadastrar")
-	public String cadastrar(Cliente cliente) {
+	public String cadastrar(ModelMap model) {
+		model.addAttribute("cliente", new Cliente());
 		return "cliente/cadastro";
 	}
 
@@ -46,7 +47,9 @@ public class ClienteController {
 
 		System.out.println("senha = " + cliente.getSenha());
 
+
 		cliente.setSenha(encoder.encode(cliente.getSenha()));
+		cliente.setEnabled(true);
 		service.salvar(cliente);
 		attr.addFlashAttribute("success", "Cliente inserido com sucesso.");
 		return "redirect:/cliente/listar";

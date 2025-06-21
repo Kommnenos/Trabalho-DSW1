@@ -55,6 +55,10 @@ public class Cliente extends AbstractEntity<Long> {
 	@Column
     private boolean enabled;
 
+	public Cliente() {
+		this.role = "ROLE_USER";
+	}
+
 	public String getEmail() {
 		return email;
 	}
