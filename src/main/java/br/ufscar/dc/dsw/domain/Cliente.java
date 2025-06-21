@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.domain;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import br.ufscar.dc.dsw.validation.UniqueCPF;
 import br.ufscar.dc.dsw.validation.UniqueEmail;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,9 +37,10 @@ public class Cliente extends AbstractEntity<Long> {
 	@Column(nullable = false, length= 60)
 	private String nome;
 
+	@UniqueCPF
 	@NotBlank
 	@Size(min=14, max=14)
-	@Column(nullable = false, length=14)
+	@Column(nullable = false, unique = true, length=14)
 	private String CPF;
 
 	@Column(length=15)
