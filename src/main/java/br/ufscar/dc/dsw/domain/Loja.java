@@ -39,9 +39,22 @@ public class Loja extends AbstractEntity<Long> {
 	@Column(nullable = false, unique = true, length = 60)
 	private String descricao;
 
+	@NotBlank
+	@Column(nullable = false, length = 10)
+	private String role;
+
+	@Column
+	private boolean enabled;
+
 	@OneToMany(mappedBy = "loja")
 	private List<Veiculo> veiculos;
-	
+
+
+	public Loja() {
+		this.role = "LOJA";
+	}
+
+
 	public String getCNPJ() {
 		return CNPJ;
 	}
@@ -88,5 +101,21 @@ public class Loja extends AbstractEntity<Long> {
 
 	public void setVeiculos(List<Veiculo> veiculos) {
 		this.veiculos = veiculos;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

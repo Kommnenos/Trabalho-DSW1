@@ -27,8 +27,8 @@ public class ClienteController {
 	private BCryptPasswordEncoder encoder;
 
 	@GetMapping("/cadastrar")
-	public String cadastrar(ModelMap model) {
-		model.addAttribute("cliente", new Cliente());
+	public String cadastrar(Cliente cliente) {
+		//model.addAttribute("cliente", new Cliente());
 		return "cliente/cadastro";
 	}
 

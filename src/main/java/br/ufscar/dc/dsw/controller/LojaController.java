@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.controller;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,9 @@ public class LojaController {
 	
 	@Autowired
 	private ILojaService service;
+
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 	
 	@GetMapping("/cadastrar")
 	public String cadastrar(Loja loja) {
@@ -39,10 +43,12 @@ public class LojaController {
 		if (result.hasErrors()) {
 			return "loja/cadastro";
 		}
-		
+
+		loja.setSenha(encoder.encode(loja.getSenha()));
+		loja.setEnabled(true);
 		service.salvar(loja);
-		attr.addFlashAttribute("sucess", "loja.create.sucess");
-		return "redirect:/lojas/listar";
+		attr.addFlashAttribute("success", "loja.create.success");
+		return "redirect:/login";
 	}
 	
 	@GetMapping("/editar/{id}")

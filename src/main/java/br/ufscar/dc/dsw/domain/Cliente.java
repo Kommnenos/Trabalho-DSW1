@@ -56,7 +56,7 @@ public class Cliente extends AbstractEntity<Long> {
     private boolean enabled;
 
 	public Cliente() {
-		this.role = "ROLE_USER";
+		this.role = "USER";
 	}
 
 	public String getEmail() {

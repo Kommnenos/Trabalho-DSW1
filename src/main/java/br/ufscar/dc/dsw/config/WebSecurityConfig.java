@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import br.ufscar.dc.dsw.security.ClienteDetailsServiceImpl;
+import br.ufscar.dc.dsw.security.UsuarioDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -18,7 +19,7 @@ public class WebSecurityConfig {
 
 	@Bean
 	public UserDetailsService userDetailsService() {
-		return new ClienteDetailsServiceImpl();
+		return new UsuarioDetailsServiceImpl();
 	}
 
 	@Bean
@@ -45,6 +46,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/error", "/login/**", "/js/**").permitAll()
 						.requestMatchers("/css/**", "/image/**", "/webjars/**").permitAll()
 						.requestMatchers("/cliente/cadastrar", "/cliente/salvar").permitAll()
+						.requestMatchers("/loja/cadastrar", "/loja/salvar").permitAll()
 						.requestMatchers("/compra/**").hasRole("USER")
 						.requestMatchers("/editora/**", "/livro/**", "/usuario/**").hasRole("ADMIN")
 						.anyRequest().authenticated())
