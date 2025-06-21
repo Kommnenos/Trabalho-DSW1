@@ -23,9 +23,10 @@
 
         <div th:replace="~{fragments/alert}"></div>
 
-        <form th:action="${loja.id == null} ? @{/loja/salvar} : @{/loja/editar}" th:object="${loja}" method="POST">
+        <form th:action="${loja.id == null} ?  (${#authorization.expression('hasRole(''ADMIN'')')} ? @{/admin/loja/salvar} : @{/loja/salvar})  :  (${#authorization.expression('hasRole(''ADMIN'')')} ? @{/admin/loja/editar} : @{/loja/editar})" th:object="${loja}" method="POST">
 
-            <div class="form-row">
+
+        <div class="form-row">
 
                 <div class="form-group col-md-6">
                     <label th:text="#{loja.email.label}" for="email"></label>
