@@ -26,7 +26,6 @@ public class ClienteAdminController {
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Cliente cliente) {
-		//model.addAttribute("cliente", new Cliente());
 		return "cliente/cadastro";
 	}
 
@@ -70,7 +69,7 @@ public class ClienteAdminController {
 		cliente.setSenha(encoder.encode(cliente.getSenha()));
 		service.salvar(cliente);
 		attr.addFlashAttribute("success", "Cliente editado com sucesso.");
-		return "redirect:/cliente/listar";
+		return "redirect:admin/cliente/listar";
 	}
 
 	@GetMapping("/excluir/{id}")

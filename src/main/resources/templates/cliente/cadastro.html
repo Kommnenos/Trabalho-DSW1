@@ -24,11 +24,10 @@
 
             <div th:replace="~{fragments/alert}"></div>
 
-            <form
-                    th:action="${cliente.id == null} ? @{/cliente/salvar} : @{/cliente/editar}"
-                    th:object="${cliente}" method="POST">
+            <form th:action="${cliente.id == null} ?  (${#authorization.expression('hasRole(''ADMIN'')')} ? @{/admin/cliente/salvar} : @{/cliente/salvar})  :  (${#authorization.expression('hasRole(''ADMIN'')')} ? @{/admin/cliente/editar} : @{/cliente/editar})" th:object="${cliente}" method="POST">
 
-                <div class="form-row">
+
+            <div class="form-row">
                     <div class="form-group col-md-6">
                         <label th:text="#{cliente.email.label}" for="email"></label>
                         <input type="email" class="form-control" id="email" placeholder="Email"

@@ -23,6 +23,10 @@ public class UsuarioDetails implements UserDetails {
         this.loja = loja;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (cliente != null) {
