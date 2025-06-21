@@ -17,7 +17,7 @@ public class Proposta extends AbstractEntity<Long>{
     private LocalDateTime data;
 
     @NotNull
-    @Column(columnDefinition = "DECIMAL(8,2) DEFAULT 0.0")
+    @Column(nullable = false, precision = 8, scale = 2)
     private BigDecimal valor;
 
     @NotNull(message = "{NotNull.proposta.veiculo}")
