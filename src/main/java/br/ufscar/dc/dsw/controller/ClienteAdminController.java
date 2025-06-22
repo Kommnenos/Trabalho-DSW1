@@ -49,7 +49,7 @@ public class ClienteAdminController {
 		cliente.setEnabled(true);
 		service.salvar(cliente);
 		attr.addFlashAttribute("success", "Cliente inserido com sucesso.");
-		return "redirect:/cliente/listar";
+		return "redirect:/admin/cliente/listar";
 	}
 
 	@GetMapping("/editar/{id}")
@@ -69,7 +69,7 @@ public class ClienteAdminController {
 		cliente.setSenha(encoder.encode(cliente.getSenha()));
 		service.salvar(cliente);
 		attr.addFlashAttribute("success", "Cliente editado com sucesso.");
-		return "redirect:admin/cliente/listar";
+		return "redirect:/admin/cliente/listar";
 	}
 
 	@GetMapping("/excluir/{id}")
