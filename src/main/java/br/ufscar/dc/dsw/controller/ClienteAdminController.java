@@ -63,27 +63,30 @@ public class ClienteAdminController {
 
 		if (result.hasErrors()) {
 			boolean errosPermitidos = true;
-
 			for (FieldError error : result.getFieldErrors()) {
 				String campo = error.getField();
-				if (!campo.equals("CPF") && !campo.equals("email")) {
+				if (!campo.equals("CPF") && !campo.equals("email") && !campo.equals("senha")) {
 					errosPermitidos = false;
 					break;
 				}
 			}
-
 			if (!errosPermitidos) {
 				return "cliente/cadastro";
 			}
 		}
 
-			System.out.println(cliente.getSenha());
+		if (cliente.getSenha() == null || cliente.getSenha().isEmpty()) {
+			Cliente clienteExistente = service.buscarPorId(cliente.getId());
+			cliente.setSenha(clienteExistente.getSenha());
+		} else {
 			cliente.setSenha(encoder.encode(cliente.getSenha()));
-			service.salvar(cliente);
-			attr.addFlashAttribute("success", "Cliente editado com sucesso.");
-			return "redirect:/admin/cliente/listar";
+		}
 
+		service.salvar(cliente);
+		attr.addFlashAttribute("success", "Cliente editado com sucesso.");
+		return "redirect:/admin/cliente/listar";
 	}
+
 
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, ModelMap model) {
