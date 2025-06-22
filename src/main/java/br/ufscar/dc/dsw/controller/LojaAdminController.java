@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,15 +61,29 @@ public class LojaAdminController {
 	public String editar(@Valid Loja loja, BindingResult result, RedirectAttributes attr) {
 
 		if (result.hasErrors()) {
-			return "loja/cadastro";
+			boolean errosPermitidos = true;
+
+			for (FieldError error : result.getFieldErrors()) {
+				String campo = error.getField();
+				if (!campo.equals("CNPJ") && !campo.equals("email")) {
+					errosPermitidos = false;
+					break;
+				}
+			}
+
+			if (!errosPermitidos) {
+				return "loja/cadastro";
+			}
 		}
+
 
 		loja.setSenha(encoder.encode(loja.getSenha()));
 		service.salvar(loja);
 		attr.addFlashAttribute("success", "Loja editada com sucesso.");
 		return "redirect:/admin/loja/listar";
 	}
-	
+
+
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, ModelMap model) {
 		if (service.lojaTemVeiculos(id)) {

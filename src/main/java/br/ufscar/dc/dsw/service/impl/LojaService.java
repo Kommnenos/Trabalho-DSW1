@@ -39,4 +39,5 @@ public class LojaService implements ILojaService {
 	public boolean lojaTemVeiculos(Long id) {
 		return !dao.findById(id.longValue()).getVeiculos().isEmpty(); 
 	}
+
 }
