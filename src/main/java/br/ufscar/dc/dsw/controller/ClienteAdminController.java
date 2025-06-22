@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +45,6 @@ public class ClienteAdminController {
 
 		System.out.println("senha = " + cliente.getSenha());
 
-
 		cliente.setSenha(encoder.encode(cliente.getSenha()));
 		cliente.setEnabled(true);
 		service.salvar(cliente);
@@ -62,14 +62,27 @@ public class ClienteAdminController {
 	public String editar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr) {
 
 		if (result.hasErrors()) {
-			return "cliente/cadastro";
+			boolean errosPermitidos = true;
+
+			for (FieldError error : result.getFieldErrors()) {
+				String campo = error.getField();
+				if (!campo.equals("CPF") && !campo.equals("email")) {
+					errosPermitidos = false;
+					break;
+				}
+			}
+
+			if (!errosPermitidos) {
+				return "cliente/cadastro";
+			}
 		}
 
-		System.out.println(cliente.getSenha());
-		cliente.setSenha(encoder.encode(cliente.getSenha()));
-		service.salvar(cliente);
-		attr.addFlashAttribute("success", "Cliente editado com sucesso.");
-		return "redirect:/admin/cliente/listar";
+			System.out.println(cliente.getSenha());
+			cliente.setSenha(encoder.encode(cliente.getSenha()));
+			service.salvar(cliente);
+			attr.addFlashAttribute("success", "Cliente editado com sucesso.");
+			return "redirect:/admin/cliente/listar";
+
 	}
 
 	@GetMapping("/excluir/{id}")

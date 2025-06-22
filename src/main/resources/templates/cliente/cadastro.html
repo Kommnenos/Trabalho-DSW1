@@ -32,6 +32,7 @@
                         <label th:text="#{cliente.email.label}" for="email"></label>
                         <input type="email" class="form-control" id="email" placeholder="Email"
                                autofocus="autofocus" th:field="*{email}"
+                               th:readonly="${cliente.id != null}"
                                th:classappend="${#fields.hasErrors('email')} ? is-invalid" />
 
                         <div class="invalid-feedback">
@@ -65,6 +66,7 @@
                     <div class="form-group col-md-6">
                         <label th:text="#{cliente.CPF.label}" for="CPF"></label>
                         <input type="text" class="form-control" id="CPF" placeholder="CPF"
+                               th:readonly="${cliente.id != null}"
                                th:field="*{CPF}" th:classappend="${#fields.hasErrors('CPF')} ? is-invalid"
                                data-mask="000.000.000-00" />
 

@@ -31,6 +31,7 @@
                 <div class="form-group col-md-6">
                     <label th:text="#{loja.email.label}" for="email"></label>
                     <input type="email" class="form-control" id="email" th:field="*{email}"
+                           th:readonly="${loja.id != null}"
                            th:classappend="${#fields.hasErrors('email')} ? is-invalid" />
                     <div class="invalid-feedback">
                         <span th:errors="*{email}"></span>
@@ -41,6 +42,7 @@
                     <label th:text="#{loja.CNPJ.label}" for="CNPJ"></label>
                     <input type="text" class="form-control" id="CNPJ" th:field="*{CNPJ}"
                            placeholder="__.___.___/____-__" data-mask="00.000.000/0000-00"
+                           th:readonly="${loja.id != null}"
                            th:classappend="${#fields.hasErrors('CNPJ')} ? is-invalid" />
                     <div class="invalid-feedback">
                         <span th:errors="*{CNPJ}"></span>
