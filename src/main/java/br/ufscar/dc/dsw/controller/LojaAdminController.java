@@ -1,5 +1,6 @@
 package br.ufscar.dc.dsw.controller;
 
+import br.ufscar.dc.dsw.domain.Cliente;
 import br.ufscar.dc.dsw.domain.Loja;
 import br.ufscar.dc.dsw.service.spec.ILojaService;
 import jakarta.validation.Valid;
@@ -65,7 +66,7 @@ public class LojaAdminController {
 
 			for (FieldError error : result.getFieldErrors()) {
 				String campo = error.getField();
-				if (!campo.equals("CNPJ") && !campo.equals("email")) {
+				if (!campo.equals("CNPJ") && !campo.equals("email") && !campo.equals("senha")) {
 					errosPermitidos = false;
 					break;
 				}
@@ -76,8 +77,13 @@ public class LojaAdminController {
 			}
 		}
 
+		if (loja.getSenha() == null || loja.getSenha().isEmpty()) {
+			Loja lojaExistente = service.buscarPorId(loja.getId());
+			loja.setSenha(lojaExistente.getSenha());
+		} else {
+			loja.setSenha(encoder.encode(loja.getSenha()));
+		}
 
-		loja.setSenha(encoder.encode(loja.getSenha()));
 		service.salvar(loja);
 		attr.addFlashAttribute("success", "Loja editada com sucesso.");
 		return "redirect:/admin/loja/listar";

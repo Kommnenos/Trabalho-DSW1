@@ -63,6 +63,7 @@ public class ClienteAdminController {
 
 		if (result.hasErrors()) {
 			boolean errosPermitidos = true;
+
 			for (FieldError error : result.getFieldErrors()) {
 				String campo = error.getField();
 				if (!campo.equals("CPF") && !campo.equals("email") && !campo.equals("senha")) {
@@ -70,6 +71,7 @@ public class ClienteAdminController {
 					break;
 				}
 			}
+
 			if (!errosPermitidos) {
 				return "cliente/cadastro";
 			}
