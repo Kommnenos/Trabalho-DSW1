@@ -55,19 +55,17 @@ public class LojaAdminController {
 		model.addAttribute("loja", service.buscarPorId(id));
 		return "loja/cadastro";
 	}
-	
+
 	@PostMapping("/editar")
 	public String editar(@Valid Loja loja, BindingResult result, RedirectAttributes attr) {
-		
-		// Apenas rejeita se o problema não for com o CNPJ (CNPJ campo read-only) 
-		
-		if (result.getFieldErrorCount() > 1 || result.getFieldError("CNPJ") == null) {
+
+		if (result.hasErrors()) {
 			return "loja/cadastro";
 		}
 
 		loja.setSenha(encoder.encode(loja.getSenha()));
 		service.salvar(loja);
-		attr.addFlashAttribute("success", "loja.edit.sucess");
+		attr.addFlashAttribute("success", "Loja editada com sucesso.");
 		return "redirect:/admin/loja/listar";
 	}
 	
