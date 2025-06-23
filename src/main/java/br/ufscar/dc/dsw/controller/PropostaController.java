@@ -16,10 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.ufscar.dc.dsw.domain.Proposta;
@@ -39,9 +36,12 @@ public class PropostaController {
     @Autowired
     private IVeiculoService veiculoService;
 
-    @GetMapping("/cadastrar")
-    public String cadastrar(Proposta proposta) {
-
+    @GetMapping("/cadastrar/{id}")
+    public String cadastrar(@PathVariable("id") Long idVeiculo, ModelMap model) {
+        Proposta proposta = new Proposta();
+        Veiculo veiculo = veiculoService.buscarPorId(idVeiculo);
+        proposta.setVeiculo(veiculo);
+        model.addAttribute("proposta", proposta);
         return "proposta/cadastro";
     }
 
@@ -80,9 +80,6 @@ public class PropostaController {
         if(proposta.getData() == null || proposta.getData().isEmpty()){
             proposta.setData(data);
         }
-        if(proposta.getVeiculo() == null){
-            //proposta.setVeiculo(new Veiculo());
-        }
         if(proposta.getStatus() == null){
             proposta.setStatus(StatusProposta.ABERTO);
         }
@@ -90,6 +87,13 @@ public class PropostaController {
         service.salvar(proposta);
         attr.addFlashAttribute("success", "proposta.create.success");
 
+        return "redirect:/proposta/listar";
+    }
+
+    @GetMapping("/excluir/{id}")
+    public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
+        service.excluir(id);
+        attr.addFlashAttribute("success", "proposta.delete.success");
         return "redirect:/proposta/listar";
     }
 

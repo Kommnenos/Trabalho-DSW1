@@ -21,6 +21,10 @@ public class PropostaService implements IPropostaService{
         dao.save(proposta);
     }
 
+    public void excluir(Long id) {
+        dao.deleteById(id);
+    }
+
     @Transactional(readOnly = true)
     public Proposta buscarPorId(Long id) {
         return dao.findById(id.longValue());

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
 </head>
@@ -41,10 +41,19 @@
                     <td th:text="${proposta.data}"></td>
                     <td th:text="${proposta.condicoesPagamento}"></td>
                     <td th:text="${proposta.status}"></td>
+                    <td>
+                        <a class="btn btn-danger btn-sm"
+                           th:href="@{/proposta/excluir/{id}(id=${proposta.id})}"
+                           onclick="return confirm('Tem certeza que deseja remover a proposta?');">
+                            <i class="oi oi-trash"></i>
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+
+
 
     </div>
 

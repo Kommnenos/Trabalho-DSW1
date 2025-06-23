@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
 </head>
@@ -52,15 +52,21 @@
                     <td th:text="${veiculo.quilometragem}"></td>
                     <td th:text="${veiculo.descricao}"></td>
                     <td>
-                        <a class="btn btn-info btn-sm"
-                           th:href="@{/veiculo/editar/{id}(id=${veiculo.id})}">
+                        <a class="btn btn-info btn-sm" sec:authorize="hasRole('LOJA')"
+                           th:href="@{/veiculo/editar/{id}(id=${veiculo.id})}" >
                             <i class="oi oi-pencil"></i>
                         </a>
 
-                        <a class="btn btn-danger btn-sm"
+                        <a class="btn btn-danger btn-sm" sec:authorize="hasRole('LOJA')"
                            th:href="@{/veiculo/excluir/{id}(id=${veiculo.id})}"
                            onclick="return confirm('Tem certeza que deseja excluir?');">
                             <i class="oi oi-trash"></i>
+                        </a>
+
+                        <a class="btn btn-success btn-sm" sec:authorize="hasRole('USER')"
+                           th:href="@{/proposta/cadastrar/{id}(id=${veiculo.id})}"
+                           onclick="return confirm('Tem certeza que deseja fazer uma proposta pelo veículo?');">
+                            <i class="oi oi-dollar"></i>
                         </a>
                     </td>
                 </tr>
