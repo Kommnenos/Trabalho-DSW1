@@ -5,14 +5,17 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 
+import br.ufscar.dc.dsw.domain.StatusProposta;
 import br.ufscar.dc.dsw.security.UsuarioDetails;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,21 +41,13 @@ public class PropostaController {
 
     @GetMapping("/cadastrar")
     public String cadastrar(Proposta proposta) {
-        LocalDateTime data = LocalDateTime.parse(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
-        proposta.setCliente(this.getCliente());
-        proposta.setData(data);
-        return "proposta/cadastro";
-    }
 
-    private Cliente getCliente() {
-        UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return usuarioDetails.getCliente();
+        return "proposta/cadastro";
     }
 
     @GetMapping("/listar")
     public String listar(ModelMap model) {
-
-        model.addAttribute("compras",service.buscarTodos(this.getCliente()));
+        model.addAttribute("propostas",service.buscarTodosPorCliente(this.getCliente()));
 
         return "proposta/lista";
     }
@@ -61,16 +56,46 @@ public class PropostaController {
     public String salvar(@Valid Proposta proposta, BindingResult result, RedirectAttributes attr) {
 
         if (result.hasErrors()) {
-            return "proposta/cadastro";
+            boolean errosPermitidos = true;
+
+            for (FieldError error : result.getFieldErrors()) {
+                String campo = error.getField();
+                if (!campo.equals("data") && !campo.equals("cliente") && !campo.equals("veiculo")) {
+                    errosPermitidos = false;
+                    break;
+                }
+            }
+
+            if (!errosPermitidos) {
+                System.out.println(result.getAllErrors());
+                return "proposta/cadastro";
+            }
+        }
+
+        String data = (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
+
+        if(proposta.getCliente() == null){
+            proposta.setCliente(getCliente());
+        }
+        if(proposta.getData() == null || proposta.getData().isEmpty()){
+            proposta.setData(data);
+        }
+        if(proposta.getVeiculo() == null){
+            //proposta.setVeiculo(new Veiculo());
+        }
+        if(proposta.getStatus() == null){
+            proposta.setStatus(StatusProposta.ABERTO);
         }
 
         service.salvar(proposta);
-        attr.addFlashAttribute("sucess", "proposta.create.success");
+        attr.addFlashAttribute("success", "proposta.create.success");
+
         return "redirect:/proposta/listar";
     }
 
-    @ModelAttribute("veiculos")
-    public List<Veiculo> listaVeiculos() {
-        return veiculoService.buscarTodos();
+    private Cliente getCliente() {
+        UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return usuarioDetails.getCliente();
     }
+
 }

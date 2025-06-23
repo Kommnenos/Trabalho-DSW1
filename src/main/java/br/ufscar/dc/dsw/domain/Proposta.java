@@ -14,13 +14,13 @@ public class Proposta extends AbstractEntity<Long>{
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime data;
+    private String data;
 
     @NotNull
     @Column(nullable = false, precision = 8, scale = 2)
     private BigDecimal valor;
 
-    @NotNull(message = "{NotNull.proposta.veiculo}")
+    //@NotNull(message = "{NotNull.proposta.veiculo}")
     @ManyToOne
     @JoinColumn(name = "veiculo_id")
     private Veiculo veiculo;
@@ -50,11 +50,11 @@ public class Proposta extends AbstractEntity<Long>{
     @Column(length = 255)
     private String linkVideoconferencia;
 
-    public LocalDateTime getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(LocalDateTime data) {
+    public void setData(String data) {
         this.data = data;
     }
 
@@ -129,4 +129,5 @@ public class Proposta extends AbstractEntity<Long>{
     public void setLinkVideoconferencia(String linkVideoconferencia) {
         this.linkVideoconferencia = linkVideoconferencia;
     }
+
 }

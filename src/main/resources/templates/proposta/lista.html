@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body>
+
+<section class="layout-content" layout:fragment="corpo">
+
+    <nav class="navbar navbar-expand-md bg-light">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <i class="oi oi-caret-right"></i>
+                    <span th:text="#{proposta.listar.label}"></span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" id="listagem">
+
+        <div th:replace="~{fragments/alert}"></div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-sm">
+                <thead style="text-align: center">
+                <tr>
+                    <th>ID</th>
+                    <th style="width: 150px;" th:text="#{proposta.valor.label}"></th>
+                    <th style="width: 150px;" th:text="#{proposta.data.label}"></th>
+                    <th th:text="#{proposta.condicoesPagamento.label}"></th>
+                    <th th:text="#{proposta.status.label}"></th>
+                    <th th:text="#{acoes.label}"></th>
+                </tr>
+                </thead>
+                <tbody style="text-align: center">
+                <tr th:each="proposta : ${propostas}">
+                    <td th:text="${proposta.id}"></td>
+                    <td th:text="${proposta.valor}"></td>
+                    <td th:text="${proposta.data}"></td>
+                    <td th:text="${proposta.condicoesPagamento}"></td>
+                    <td th:text="${proposta.status}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</section>
+</body>
+</html>
