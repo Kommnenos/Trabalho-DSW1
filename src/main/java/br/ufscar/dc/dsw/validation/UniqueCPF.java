@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueCPF {
-    String message() default "CPF is already registered";
+    String message() default "{Unique.cpf}";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
 }

@@ -26,6 +26,16 @@
 					<a class="btn btn-info" th:href="@{/login}">Login</a>
 				</div>
 
+				<div style="right: 100px; position: absolute">
+					<form method="get" action="">
+						<select name="lang" onchange="this.form.submit()">
+							<option value="pt" th:text="#{idioma.pt}" th:selected="${#locale.language == 'pt'}"></option>
+							<option value="en" th:text="#{idioma.en}"  th:selected="${#locale.language == 'en'}"></option>
+						</select>
+					</form>
+				</div>
+
+
 				<button type="button" class="btn btn-dark navbar-toggle pull-left">
 					<i class="oi oi-menu"></i>
 				</button>
