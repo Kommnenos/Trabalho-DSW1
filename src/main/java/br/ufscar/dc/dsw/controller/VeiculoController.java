@@ -39,8 +39,26 @@ public class VeiculoController {
 		return "veiculo/cadastro";
 	}
 
-	@GetMapping("/listar")
-	public String listar(ModelMap model) {
+	@GetMapping("/listarVeiculosLoja")
+	public String listarVeiculosDaLoja(ModelMap model) {
+		UsuarioDetails usuario = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Loja loja = usuario.getLoja();
+
+		return String.format("redirect:/veiculo/listar/%d", loja.getId());
+	}
+
+
+	@GetMapping("/listar/{id}")
+	public String listar(@PathVariable("id") Long idLoja, ModelMap model) {
+		model.addAttribute("veiculos", veiculoService.buscarTodosPorLoja(idLoja));
+
+		System.out.println("------------------------ LISTANDO --------------------------");
+		System.out.println(veiculoService.buscarTodosPorLoja(idLoja));
+		return "veiculo/lista";
+	}
+
+	@GetMapping("/listarTodos")
+	public String listarTodos(ModelMap model) {
 		model.addAttribute("veiculos", veiculoService.buscarTodos());
 		System.out.println(veiculoService.buscarTodos());
 		return "veiculo/lista";
@@ -53,7 +71,7 @@ public class VeiculoController {
 
 			for (FieldError error : result.getFieldErrors()) {
 				String campo = error.getField();
-				if (!campo.equals("loja")){
+				if (!campo.equals("loja")) {
 					return "/error";
 				}
 			}
@@ -77,22 +95,22 @@ public class VeiculoController {
 	public String editar(@Valid Veiculo veiculo, BindingResult result, RedirectAttributes attr) {
 
 		if (result.hasErrors()) {
-
 			for (FieldError error : result.getFieldErrors()) {
 				String campo = error.getField();
-				if (!campo.equals("loja")){
+				if (!campo.equals("loja")) {
 					return "/error";
 				}
 			}
 
 		}
+
 		UsuarioDetails usuario = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Loja loja = usuario.getLoja();
 		veiculo.setLoja(loja);
 
 		veiculoService.salvar(veiculo);
 		attr.addFlashAttribute("success", "veiculo.edit.success");
-		return "redirect:/veiculo/listar";
+		return String.format("redirect:/veiculo/listar/%d", loja.getId());
 	}
 
 	@GetMapping("/excluir/{id}")
@@ -101,9 +119,6 @@ public class VeiculoController {
 		attr.addFlashAttribute("success", "veiculo.delete.success");
 		return "redirect:/veiculo/listar";
 	}
-
-	@ModelAttribute("veiculos")
-	public List<Veiculo> listaVeiculos() {
-		return veiculoService.buscarTodos();
-	}
 }
+
+

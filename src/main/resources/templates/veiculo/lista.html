@@ -16,7 +16,7 @@
                 </li>
             </ul>
         </div>
-        <a class="btn btn-primary btn-md" th:href="@{/veiculo/cadastrar}" role="button">
+        <a class="btn btn-primary btn-md" th:href="@{/veiculo/cadastrar}" role="button" sec:authorize="hasRole('LOJA')"x>
             <span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
             <span th:text="#{veiculos.cadastrar.label}"></span>
         </a>
@@ -31,6 +31,7 @@
                 <thead>
                 <tr>
                     <th>ID</th>
+                    <th th:text="#{veiculos.Loja.label}"></th>
                     <th th:text="#{veiculos.modelo.label}"></th>
                     <th style="width: 220px;" th:text="#{veiculos.chassi.label}"></th>
                     <th style="width: 160px;" th:text="#{veiculos.ano.label}"></th>
@@ -38,12 +39,14 @@
                     <th th:text="#{veiculos.placa.label}"></th>
                     <th th:text="#{veiculos.quilometragem.label}"></th>
                     <th th:text="#{veiculos.descricao.label}"></th>
-                    <th th:text="#{acoes.label}"></th>
+                    <th th:text="#{acoes.label}" sec:authorize="isAuthenticated()"></th>
+
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="veiculo : ${veiculos}">
                     <td th:text="${veiculo.id}"></td>
+                    <td th:text="${veiculo.loja.nome}"></td>
                     <td th:text="${veiculo.modelo}"></td>
                     <td th:text="${veiculo.chassi}"></td>
                     <td th:text="${veiculo.ano}"></td>
@@ -51,7 +54,7 @@
                     <td th:text="${veiculo.placa}"></td>
                     <td th:text="${veiculo.quilometragem}"></td>
                     <td th:text="${veiculo.descricao}"></td>
-                    <td>
+                    <td sec:authorize="isAuthenticated()">
                         <a class="btn btn-info btn-sm" sec:authorize="hasRole('LOJA')"
                            th:href="@{/veiculo/editar/{id}(id=${veiculo.id})}" >
                             <i class="oi oi-pencil"></i>

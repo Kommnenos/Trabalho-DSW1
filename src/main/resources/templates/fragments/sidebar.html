@@ -35,7 +35,7 @@
 			<li class="nav-item" sec:authorize="hasRole('LOJA')"><a class="nav-link"
 																	th:href="@{/veiculo/cadastrar}"> <i class="oi oi-plus"></i> <span th:text="#{cadastrar.label}">Cadastrar</span>
 			</a></li>
-			<li class="nav-item" sec:authorize="hasRole('LOJA')"><a class="nav-link" th:href="@{/veiculo/listar}">
+			<li class="nav-item" sec:authorize="hasRole('LOJA')"><a class="nav-link" th:href="@{/veiculo/listarVeiculosLoja}">
 				<i class="oi oi-spreadsheet"></i> <span th:text="#{listar.label}">Listar</span>
 			</a></li>
 
