@@ -27,7 +27,7 @@ public class PropostaService implements IPropostaService{
     }
 
     @Transactional(readOnly = true)
-    public List<Proposta> buscarTodos(Cliente cliente) {
+    public List<Proposta> buscarTodosPorCliente(Cliente cliente) {
         return dao.findAllByCliente(cliente);
     }
 }

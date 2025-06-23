@@ -15,7 +15,7 @@
                 </ul>
             </div>
             <a class="btn btn-primary btn-md" th:href="@{/admin/cliente/listar}"
-               role="button"> <span class="oi oi-spreadsheet" title="Cadastro"
+               role="button" sec:authorize="hasRole('ADMIN')"> <span class="oi oi-spreadsheet" title="Cadastro"
                                     aria-hidden="true"></span> <span th:text="#{cliente.listar.label}"></span>
             </a>
         </nav>
@@ -116,7 +116,6 @@
                                 th:classappend="${#fields.hasErrors('role')} ? is-invalid">
                             <option value="ROLE_USER">ROLE_USER</option>
                             <option value="ROLE_ADMIN">ROLE_ADMIN</option>
-                            <option value="ROLE_LOJA">ROLE_LOJA</option>
                         </select>
 
                         <div class="invalid-feedback">

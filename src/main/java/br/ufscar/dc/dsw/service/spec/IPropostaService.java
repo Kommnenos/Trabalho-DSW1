@@ -7,6 +7,6 @@ import br.ufscar.dc.dsw.domain.Cliente;
 
 public interface IPropostaService {
     Proposta buscarPorId(Long id);
-    List<Proposta> buscarTodos(Cliente cliente);
+    List<Proposta> buscarTodosPorCliente(Cliente cliente);
     void salvar (Proposta proposta);
 }
