@@ -30,7 +30,7 @@
 
                 <div class="form-group col-md-6">
                     <label th:text="#{loja.email.label}" for="email"></label>
-                    <input type="email" class="form-control" id="email" th:field="*{email}"
+                    <input type="email" class="form-control" id="email" th:field="*{email}" th:placeholder="#{loja.email.placeholder}"
                            th:readonly="${loja.id != null}"
                            th:classappend="${#fields.hasErrors('email')} ? is-invalid" />
                     <div class="invalid-feedback">
@@ -51,7 +51,7 @@
 
                 <div class="form-group col-md-6">
                     <label th:text="#{loja.senha.label}" for="senha"></label>
-                    <input type="password" class="form-control" id="senha" th:field="*{senha}"
+                    <input type="password" class="form-control" id="senha" th:field="*{senha}" th:placeholder="#{loja.senha.placeholder}"
                            th:classappend="${#fields.hasErrors('senha')} ? is-invalid" />
                     <div class="invalid-feedback">
                         <span th:errors="*{senha}"></span>
@@ -60,7 +60,7 @@
 
                 <div class="form-group col-md-6">
                     <label th:text="#{loja.nome.label}" for="nome"></label>
-                    <input type="text" class="form-control" id="nome" th:field="*{nome}"
+                    <input type="text" class="form-control" id="nome" th:field="*{nome}" th:placeholder="#{loja.nome.placeholder}"
                            th:classappend="${#fields.hasErrors('nome')} ? is-invalid" />
                     <div class="invalid-feedback">
                         <span th:errors="*{nome}"></span>
@@ -69,7 +69,7 @@
 
                 <div class="form-group col-md-12">
                     <label th:text="#{loja.descricao.label}" for="descricao"></label>
-                    <textarea class="form-control" id="descricao" th:field="*{descricao}" rows="3"
+                    <textarea class="form-control" id="descricao" th:field="*{descricao}" rows="3" th:placeholder="#{loja.descricao.placeholder}"
                               th:classappend="${#fields.hasErrors('descricao')} ? is-invalid"></textarea>
                     <div class="invalid-feedback">
                         <span th:errors="*{descricao}"></span>

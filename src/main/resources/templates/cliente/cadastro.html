@@ -30,7 +30,7 @@
             <div class="form-row">
                     <div class="form-group col-md-6">
                         <label th:text="#{cliente.email.label}" for="email"></label>
-                        <input type="email" class="form-control" id="email" placeholder="Email"
+                        <input type="email" class="form-control" id="email" th:placeholder="#{cliente.email.placeholder}"
                                autofocus="autofocus" th:field="*{email}"
                                th:readonly="${cliente.id != null}"
                                th:classappend="${#fields.hasErrors('email')} ? is-invalid" />
@@ -42,7 +42,7 @@
 
                     <div class="form-group col-md-6">
                         <label th:text="#{cliente.senha.label}" for="password"></label>
-                        <input type="password" class="form-control" id="password" placeholder="Senha"
+                        <input type="password" class="form-control" id="password" th:placeholder="#{cliente.senha.placeholder}"
                                autofocus="autofocus" th:field="*{senha}"
                                th:classappend="${#fields.hasErrors('senha')} ? is-invalid" />
 
@@ -54,7 +54,7 @@
 
                     <div class="form-group col-md-6">
                         <label th:text="#{cliente.nome.label}" for="nome"></label>
-                        <input type="text" class="form-control" id="nome" placeholder="Nome"
+                        <input type="text" class="form-control" id="nome" th:placeholder="#{cliente.nome.placeholder}"
                                autofocus="autofocus" th:field="*{nome}"
                                th:classappend="${#fields.hasErrors('nome')} ? is-invalid" />
 
@@ -65,7 +65,7 @@
 
                     <div class="form-group col-md-6">
                         <label th:text="#{cliente.CPF.label}" for="CPF"></label>
-                        <input type="text" class="form-control" id="CPF" placeholder="CPF"
+                        <input type="text" class="form-control" id="CPF" placeholder="___.___.___-__"
                                th:readonly="${cliente.id != null}"
                                th:field="*{CPF}" th:classappend="${#fields.hasErrors('CPF')} ? is-invalid"
                                data-mask="000.000.000-00" />
@@ -77,7 +77,7 @@
 
                     <div class="form-group col-md-6">
                         <label th:text="#{cliente.telefone.label}" for="telefone"></label>
-                        <input type="text" class="form-control" id="telefone" placeholder="Telefone"
+                        <input type="text" class="form-control" id="telefone" placeholder="(__) _____-____"
                                th:field="*{telefone}" th:classappend="${#fields.hasErrors('telefone')} ? is-invalid"
                                data-mask="(00) 00000-0000" />
 

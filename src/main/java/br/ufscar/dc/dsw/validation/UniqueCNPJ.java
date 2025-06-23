@@ -12,7 +12,7 @@ import jakarta.validation.Payload;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueCNPJ {
-    String message() default "CNPJ is already registered";
+    String message() default  "{Unique.loja.cnpj}";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
 }
