@@ -39,7 +39,7 @@
                     <th th:text="#{veiculos.placa.label}"></th>
                     <th th:text="#{veiculos.quilometragem.label}"></th>
                     <th th:text="#{veiculos.descricao.label}"></th>
-                    <th th:text="#{acoes.label}" sec:authorize="isAuthenticated()"></th>
+                    <th th:text="#{acoes.label}"  th:if="${!(listarTodos == 'true' and #authorization.expression('hasRole(''LOJA'')'))}" sec:authorize="isAuthenticated()"></th>
 
                 </tr>
                 </thead>
@@ -55,12 +55,12 @@
                     <td th:text="${veiculo.quilometragem}"></td>
                     <td th:text="${veiculo.descricao}"></td>
                     <td sec:authorize="isAuthenticated()">
-                        <a class="btn btn-info btn-sm" sec:authorize="hasRole('LOJA')"
+                        <a class="btn btn-info btn-sm" th:if="${listarTodos != 'true'}" sec:authorize="hasRole('LOJA')"
                            th:href="@{/veiculo/editar/{id}(id=${veiculo.id})}" >
                             <i class="oi oi-pencil"></i>
                         </a>
 
-                        <a class="btn btn-danger btn-sm" sec:authorize="hasRole('LOJA')"
+                        <a class="btn btn-danger btn-sm" th:if="${listarTodos != 'true'}" sec:authorize="hasRole('LOJA')"
                            th:href="@{/veiculo/excluir/{id}(id=${veiculo.id})}"
                            onclick="return confirm('Tem certeza que deseja excluir?');">
                             <i class="oi oi-trash"></i>

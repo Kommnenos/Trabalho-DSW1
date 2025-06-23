@@ -60,6 +60,7 @@ public class VeiculoController {
 	@GetMapping("/listarTodos")
 	public String listarTodos(ModelMap model) {
 		model.addAttribute("veiculos", veiculoService.buscarTodos());
+		model.addAttribute("listarTodos", "true");
 		System.out.println(veiculoService.buscarTodos());
 		return "veiculo/lista";
 	}
