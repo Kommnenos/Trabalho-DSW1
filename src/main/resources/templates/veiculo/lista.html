@@ -39,7 +39,7 @@
                     <th th:text="#{veiculos.placa.label}"></th>
                     <th th:text="#{veiculos.quilometragem.label}"></th>
                     <th th:text="#{veiculos.descricao.label}"></th>
-                    <th th:text="#{acoes.label}"  th:if="${!(listarTodos == 'true' and #authorization.expression('hasRole(''LOJA'')'))}" sec:authorize="isAuthenticated()"></th>
+                    <th th:text="#{acoes.label}"   th:if="${!(listarTodos == 'true' and #authorization.expression('hasAnyRole(''LOJA'',''ADMIN'')'))}"   sec:authorize="isAuthenticated()"></th>
 
                 </tr>
                 </thead>
