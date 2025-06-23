@@ -58,6 +58,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/admin/**" ).hasRole("ADMIN")
 						.requestMatchers("/proposta/**" ).permitAll()
 						.requestMatchers("/veiculo/cadastrar", "/veiculo/salvar" ).hasRole("LOJA")
+						.requestMatchers("/veiculo/listar").permitAll()
 						.anyRequest().authenticated())
 
 				.formLogin((form) -> form

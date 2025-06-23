@@ -30,6 +30,7 @@ public class DcMotorsApplication {
 				admin1.setEnabled(true);
 				clienteDAO.save(admin1);
 			}
+
 		};
 	}
 
