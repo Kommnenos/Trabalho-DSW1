@@ -27,6 +27,9 @@ public class UsuarioDetails implements UserDetails {
         return cliente;
     }
 
+    public Loja getLoja() {
+        return loja;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (cliente != null) {

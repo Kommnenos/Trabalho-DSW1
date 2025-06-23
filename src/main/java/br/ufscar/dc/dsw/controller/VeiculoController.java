@@ -2,12 +2,15 @@ package br.ufscar.dc.dsw.controller;
 
 import java.util.List;
 
+import br.ufscar.dc.dsw.security.UsuarioDetails;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,25 +35,36 @@ public class VeiculoController {
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Veiculo veiculo) {
+
 		return "veiculo/cadastro";
 	}
 
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
 		model.addAttribute("veiculos", veiculoService.buscarTodos());
+		System.out.println(veiculoService.buscarTodos());
 		return "veiculo/lista";
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(@Valid Veiculo veiculo, BindingResult result, RedirectAttributes attr) {
+	public String salvar(@Valid Veiculo veiculo, BindingResult result, RedirectAttributes attr, ModelMap model) {
 
 		if (result.hasErrors()) {
-			return "veiculo/cadastro";
-		}
 
+			for (FieldError error : result.getFieldErrors()) {
+				String campo = error.getField();
+				if (!campo.equals("loja")){
+					return "/error";
+				}
+			}
+
+		}
+		UsuarioDetails usuario = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Loja loja = usuario.getLoja();
+		veiculo.setLoja(loja);
 		veiculoService.salvar(veiculo);
 		attr.addFlashAttribute("success", "veiculo.create.success");
-		return "redirect:/veiculo/listar";
+		return "veiculo/lista";
 	}
 
 	@GetMapping("/editar/{id}")
@@ -63,8 +77,18 @@ public class VeiculoController {
 	public String editar(@Valid Veiculo veiculo, BindingResult result, RedirectAttributes attr) {
 
 		if (result.hasErrors()) {
-			return "veiculo/cadastro";
+
+			for (FieldError error : result.getFieldErrors()) {
+				String campo = error.getField();
+				if (!campo.equals("loja")){
+					return "/error";
+				}
+			}
+
 		}
+		UsuarioDetails usuario = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Loja loja = usuario.getLoja();
+		veiculo.setLoja(loja);
 
 		veiculoService.salvar(veiculo);
 		attr.addFlashAttribute("success", "veiculo.edit.success");
