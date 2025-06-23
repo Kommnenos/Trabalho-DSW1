@@ -9,7 +9,6 @@
 			</a></li>
 		</ul>
 
-		<!--	Clientes	-->
 		<ul class="nav nav-pills" sec:authorize="hasRole('ADMIN')">
 			<li class="nav-item"><span class="nav-link active" th:text="#{clientes.label}"></span></li>
 			<li class="nav-item"><a class="nav-link" th:href="@{/admin/cliente/cadastrar}"> <i class="oi oi-plus"></i>
@@ -20,7 +19,6 @@
 			</a></li>
 		</ul>
 
-		<!--	Lojas	-->
 		<ul class="nav nav-pills" sec:authorize="hasRole('ADMIN')">
 			<li class="nav-item"><span class="nav-link active" th:text="#{vendedoras.label}"></span></li>
 			<li class="nav-item"><a class="nav-link"
@@ -32,7 +30,6 @@
 			</a></li>
 		</ul>
 
-		<!--	Carros	-->
 		<ul class="nav nav-pills" >
 			<li class="nav-item"><span class="nav-link active" th:text="#{carros.label}">Carros</span></li>
 			<li class="nav-item" sec:authorize="hasRole('LOJA')"><a class="nav-link"
