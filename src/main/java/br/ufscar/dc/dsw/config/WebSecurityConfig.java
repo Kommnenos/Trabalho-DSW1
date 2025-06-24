@@ -49,16 +49,20 @@ public class WebSecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 				.authorizeHttpRequests((authz) -> authz
-						.requestMatchers("/error", "/login/**", "/js/**").permitAll()
+						.requestMatchers("/", "/home", "/error", "/login/**", "/js/**").permitAll()
 						.requestMatchers("/css/**", "/image/**", "/webjars/**").permitAll()
 						.requestMatchers("/cliente/cadastrar", "/cliente/salvar").permitAll()
 						.requestMatchers("/loja/cadastrar", "/loja/salvar").permitAll()
 						.requestMatchers( "/veiculo/listarTodos").permitAll()
-						.requestMatchers("/compra/**").hasRole("USER")
 						.requestMatchers("/admin/**" ).hasRole("ADMIN")
-						.requestMatchers("/proposta/**" ).permitAll()
 						.requestMatchers("/veiculo/cadastrar", "/veiculo/salvar" ).hasRole("LOJA")
-						.requestMatchers("/veiculo/listar").permitAll()
+						.requestMatchers("/veiculo/**").hasRole("LOJA")
+						.requestMatchers("/proposta/listar").hasAnyRole("USER","LOJA")
+						.requestMatchers("/proposta/cadastrar/**", "/proposta/cliente/**").hasRole("USER")
+						.requestMatchers("/proposta/aceitar/**").hasRole("LOJA")
+						.requestMatchers("/proposta/loja/**").hasRole("LOJA")
+						.requestMatchers("/proposta/**" ).hasRole("USER")
+
 						.anyRequest().authenticated())
 
 				.formLogin((form) -> form

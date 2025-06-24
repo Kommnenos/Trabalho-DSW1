@@ -14,6 +14,7 @@ public interface IVeiculoService {
 	void salvar(Veiculo veiculo);
 	
 	void excluir(Long id);
+
 	@Transactional(readOnly = true)
 	public List<Veiculo> buscarTodosPorLoja(Long lojaId);
 	

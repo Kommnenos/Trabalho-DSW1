@@ -68,13 +68,14 @@
 
                         <a class="btn btn-danger btn-sm" th:if="${listarTodos != 'true'}" sec:authorize="hasRole('LOJA')"
                            th:href="@{/veiculo/excluir/{id}(id=${veiculo.id})}"
-                           onclick="return confirm('Tem certeza que deseja excluir?');">
+                           th:onclick="|return confirm('#{veiculos.excluir.confirm}');|">
+
                             <i class="oi oi-trash"></i>
                         </a>
 
                         <a class="btn btn-success btn-sm" sec:authorize="hasRole('USER')"
                            th:href="@{/proposta/cadastrar/{id}(id=${veiculo.id})}"
-                           onclick="return confirm('Tem certeza que deseja fazer uma proposta pelo veículo?');">
+                           th:onclick="|return confirm('#{proposta.fazer.confirm}');|">
                             <i class="oi oi-dollar"></i>
                         </a>
                     </td>

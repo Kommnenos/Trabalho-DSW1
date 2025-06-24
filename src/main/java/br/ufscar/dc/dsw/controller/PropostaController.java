@@ -1,5 +1,6 @@
 package br.ufscar.dc.dsw.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -7,6 +8,8 @@ import java.util.List;
 
 import br.ufscar.dc.dsw.domain.StatusProposta;
 import br.ufscar.dc.dsw.security.UsuarioDetails;
+import br.ufscar.dc.dsw.service.impl.EmailService;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +39,8 @@ public class PropostaController {
 
     @Autowired
     private IVeiculoService veiculoService;
-
+    @Autowired
+    private EmailService emailService;
 
 
     @GetMapping("/cadastrar/{id}")
@@ -122,6 +126,45 @@ public class PropostaController {
         return "redirect:/proposta/cliente/listar";
     }
 
+    @GetMapping("/aceitar/{id}")
+    public String aceitar(@PathVariable("id") Long id, RedirectAttributes attr) throws UnsupportedEncodingException {
+        Proposta proposta = service.buscarPorId(id);
+        proposta.setStatus(StatusProposta.ACEITO);
+        service.salvar(proposta);
+        attr.addFlashAttribute("success", "proposta.aceitar.success");
+
+        String nomeLoja = proposta.getVeiculo().getLoja().getNome();
+        String placaVeiculo = proposta.getVeiculo().getPlaca();
+
+        String assunto = "Proposta aceita";
+        String corpo = "Parabéns, a proposta sobre o veículo de placa: "+placaVeiculo+" da loja "+nomeLoja+" foi aceita!";
+        String enderecoCliente = proposta.getCliente().getEmail();
+        String nomeCliente = proposta.getCliente().getNome();
+        enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
+
+        return "redirect:/proposta/cliente/listar";
+    }
+
+    @GetMapping("/rejeitar/{id}")
+    public String rejeitar(@PathVariable("id") Long id, RedirectAttributes attr) throws UnsupportedEncodingException {
+        Proposta proposta = service.buscarPorId(id);
+        proposta.setStatus(StatusProposta.NAO_ACEITO);
+        service.salvar(proposta);
+        attr.addFlashAttribute("success", "proposta.rejeitar.success");
+
+        String nomeLoja = proposta.getVeiculo().getLoja().getNome();
+        String placaVeiculo = proposta.getVeiculo().getPlaca();
+
+        String assunto = "Proposta rejeitada";
+        String corpo = "A proposta sobre o veículo de placa: "+placaVeiculo+" da loja "+nomeLoja+" foi rejeitada.";
+        String enderecoCliente = proposta.getCliente().getEmail();
+        String nomeCliente = proposta.getCliente().getNome();
+        enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
+
+        return "redirect:/proposta/cliente/listar";
+    }
+
+
     private Cliente getCliente() {
         UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return usuarioDetails.getCliente();
@@ -130,6 +173,15 @@ public class PropostaController {
     private Loja getLoja() {
         UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return usuarioDetails.getLoja();
+    }
+
+    private void enviarEmail(String assunto, String corpo, String paraEndereco, String paraNome) throws UnsupportedEncodingException {
+
+        InternetAddress to = new InternetAddress(paraEndereco, paraNome);
+        InternetAddress from = new InternetAddress("dcmotorsbrasil@gmail.com", "DC Motors");
+        emailService.send(from, to, assunto, corpo);
+
+
     }
 
 }

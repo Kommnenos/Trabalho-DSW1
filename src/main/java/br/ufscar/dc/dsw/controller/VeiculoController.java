@@ -36,12 +36,8 @@ public class VeiculoController {
 	@Autowired
 	private IVeiculoService veiculoService;
 
-	@Autowired
-	private ILojaService lojaService;
-
 	@GetMapping("/cadastrar")
 	public String cadastrar(Veiculo veiculo) {
-
 		return "veiculo/cadastro";
 	}
 
@@ -111,10 +107,9 @@ public class VeiculoController {
 
 		Loja loja = getLoja();
 		veiculo.setLoja(loja);
-
 		veiculoService.salvar(veiculo);
 		attr.addFlashAttribute("success", "veiculo.edit.success");
-		return String.format("redirect:/veiculo/listar/%d", loja.getId());
+		return "redirect:/veiculo/listarVeiculosLoja";
 	}
 
 	@GetMapping("/excluir/{id}")
