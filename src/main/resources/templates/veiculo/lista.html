@@ -31,11 +31,11 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th th:text="#{veiculos.Loja.label}"></th>
+                    <th th:text="#{veiculos.Loja.label}" th:if="${!(listarTodos == 'false')}"></th>
                     <th th:text="#{veiculos.modelo.label}"></th>
                     <th style="width: 220px;" th:text="#{veiculos.chassi.label}"></th>
                     <th style="width: 160px;" th:text="#{veiculos.ano.label}"></th>
-                    <th style="width: 160px;" th:text="#{veiculos.CNPJLoja.label}"></th>
+                    <th style="width: 160px;" th:text="#{veiculos.CNPJLoja.label}" th:if="${!(listarTodos == 'false')}"></th>
                     <th th:text="#{veiculos.placa.label}"></th>
                     <th th:text="#{veiculos.quilometragem.label}"></th>
                     <th th:text="#{veiculos.descricao.label}"></th>
@@ -46,11 +46,11 @@
                 <tbody>
                 <tr th:each="veiculo : ${veiculos}">
                     <td th:text="${veiculo.id}"></td>
-                    <td th:text="${veiculo.loja.nome}"></td>
+                    <td th:text="${veiculo.loja.nome}" th:if="${!(listarTodos == 'false')}"></td>
                     <td th:text="${veiculo.modelo}"></td>
                     <td th:text="${veiculo.chassi}"></td>
                     <td th:text="${veiculo.ano}"></td>
-                    <td th:text="${veiculo.CNPJLoja}"></td>
+                    <td th:text="${veiculo.CNPJLoja}" th:if="${!(listarTodos == 'false')}"></td>
                     <td th:text="${veiculo.placa}"></td>
                     <td th:text="${veiculo.quilometragem}"></td>
                     <td th:text="${veiculo.descricao}"></td>
