@@ -12,4 +12,5 @@ public interface IPropostaService {
     List<Proposta> buscarTodosPorLoja(Loja loja);
     void salvar (Proposta proposta);
     void excluir(Long id);
+    public boolean temPropostaAbertaParaCliente(Cliente cliente);
 }

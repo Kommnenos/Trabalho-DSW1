@@ -70,6 +70,10 @@
                     </div>
                 </div>
 
+                <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                    <p th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
+                </div>
+
 
 
             </div>

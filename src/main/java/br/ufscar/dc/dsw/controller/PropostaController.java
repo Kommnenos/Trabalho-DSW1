@@ -76,6 +76,11 @@ public class PropostaController {
                 }
             }
 
+            if(service.temPropostaAbertaParaCliente(getCliente())){
+                result.rejectValue("", "proposta.erro.propostaEmAberto");
+                return "proposta/cadastro";
+            }
+
             if (!errosPermitidos) {
                 return "proposta/cadastro";
             }
