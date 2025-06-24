@@ -21,3 +21,6 @@ Pastas dividias em modelo, visao e controlador.
 
 # Comando para execucao:
  - mvn spring-boot:run
+
+# Observacoes:
+- Implementados todos os pontos do arquivo de requisitos, com excessao do envio de contrapropostas e link da reuniao (ainda em desenvolvimento)
