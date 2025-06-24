@@ -73,7 +73,7 @@ public class VeiculoController {
 		veiculo.setLoja(getLoja());
 		veiculoService.salvar(veiculo);
 		attr.addFlashAttribute("success", "veiculo.create.success");
-		return "veiculo/lista";
+		return "redirect:/veiculo/listarVeiculosLoja";
 	}
 
 	@GetMapping("/editar/{id}")
@@ -107,7 +107,7 @@ public class VeiculoController {
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		veiculoService.excluir(id);
 		attr.addFlashAttribute("success", "veiculo.delete.success");
-		return "redirect:/veiculo/listar";
+		return "redirect:/veiculo/listarVeiculosLoja";
 	}
 
 	private Loja getLoja(){
