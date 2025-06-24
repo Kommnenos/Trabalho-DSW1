@@ -51,6 +51,11 @@ public class Veiculo extends AbstractEntity<Long> {
 	@JoinColumn(name = "loja_id")
 	private Loja loja;
 
+	@Lob
+	@Basic
+	@Column(length = 10485760) // 1MB
+	private byte[] imagem;
+
 	public String getPlaca() {
 		return placa;
 	}
@@ -119,5 +124,11 @@ public class Veiculo extends AbstractEntity<Long> {
 		return loja.getCNPJ();
 	}
 
+	public byte[] getImagem() {
+		return imagem;
+	}
 
+	public void setImagem(byte[] imagem) {
+		this.imagem = imagem;
+	}
 }

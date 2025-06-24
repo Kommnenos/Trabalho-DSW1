@@ -4,8 +4,12 @@ import java.util.List;
 
 import br.ufscar.dc.dsw.security.UsuarioDetails;
 import jakarta.validation.Valid;
+import java.io.IOException;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,6 +20,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.ufscar.dc.dsw.domain.Loja;
@@ -57,7 +63,7 @@ public class VeiculoController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(@Valid Veiculo veiculo, BindingResult result, RedirectAttributes attr, ModelMap model) {
+	public String salvar(@Valid Veiculo veiculo, BindingResult result, RedirectAttributes attr, @RequestParam(name ="file") MultipartFile file, ModelMap model) throws IOException {
 
 		if (result.hasErrors()) {
 
@@ -68,6 +74,10 @@ public class VeiculoController {
 				}
 			}
 
+		}
+
+		if (!file.getOriginalFilename().isBlank()) {
+			veiculo.setImagem(file.getBytes());
 		}
 
 		veiculo.setLoja(getLoja());
@@ -83,7 +93,7 @@ public class VeiculoController {
 	}
 
 	@PostMapping("/editar")
-	public String editar(@Valid Veiculo veiculo, BindingResult result, RedirectAttributes attr) {
+	public String editar(@Valid Veiculo veiculo, BindingResult result, @RequestParam(name ="file") MultipartFile file, RedirectAttributes attr) throws IOException {
 
 		if (result.hasErrors()) {
 			for (FieldError error : result.getFieldErrors()) {
@@ -93,6 +103,10 @@ public class VeiculoController {
 				}
 			}
 
+		}
+
+		if (!file.getOriginalFilename().isBlank()) {
+			veiculo.setImagem(file.getBytes());
 		}
 
 		Loja loja = getLoja();
@@ -113,6 +127,29 @@ public class VeiculoController {
 	private Loja getLoja(){
 		UsuarioDetails usuario = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return usuario.getLoja();
+	}
+
+	@Cacheable(cacheNames = "imagens", key="#id")
+	private byte[] getImagem(Long id) {
+		Veiculo veiculo = veiculoService.buscarPorId(id);
+		return veiculo.getImagem();
+	}
+
+	@GetMapping(value = "/download/{id}")
+	public void download(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Long id) {
+		
+		// set content type
+		response.setContentType("image/png");
+		
+		try {
+			// copies all bytes to an output stream
+			response.getOutputStream().write(getImagem(id));
+
+			// flushes output stream
+			response.getOutputStream().flush();
+		} catch (IOException e) {
+			System.out.println("Error :- " + e.getMessage());
+		}
 	}
 }
 
