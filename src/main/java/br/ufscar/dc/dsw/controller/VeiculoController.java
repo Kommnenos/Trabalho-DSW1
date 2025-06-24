@@ -93,7 +93,6 @@ public class VeiculoController {
 
 		Loja loja = getLoja();
 		veiculo.setLoja(loja);
-
 		veiculoService.salvar(veiculo);
 		attr.addFlashAttribute("success", "veiculo.edit.success");
 		return "redirect:/veiculo/listarVeiculosLoja";
