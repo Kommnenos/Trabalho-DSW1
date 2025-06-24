@@ -178,7 +178,7 @@ public class PropostaController {
     private void enviarEmail(String assunto, String corpo, String paraEndereco, String paraNome) throws UnsupportedEncodingException {
 
         InternetAddress to = new InternetAddress(paraEndereco, paraNome);
-        InternetAddress from = new InternetAddress("pedrolealdini@gmail.com", "DC Motors");
+        InternetAddress from = new InternetAddress("dcmotorsbrasil@gmail.com", "DC Motors");
         emailService.send(from, to, assunto, corpo);
 
 
