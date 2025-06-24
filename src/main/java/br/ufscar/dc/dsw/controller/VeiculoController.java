@@ -42,15 +42,11 @@ public class VeiculoController {
 	@GetMapping("/listarVeiculosLoja")
 	public String listarVeiculosDaLoja(ModelMap model) {
 		Loja loja = getLoja();
-		return String.format("redirect:/veiculo/listar/%d", loja.getId());
-	}
-
-
-	@GetMapping("/listar/{id}")
-	public String listar(@PathVariable("id") Long idLoja, ModelMap model) {
-		model.addAttribute("veiculos", veiculoService.buscarTodosPorLoja(idLoja));
+		model.addAttribute("veiculos", veiculoService.buscarTodosPorLoja(loja.getId()));
+		model.addAttribute("listarTodos", "false");
 		return "veiculo/lista";
 	}
+
 
 	@GetMapping("/listarTodos")
 	public String listarTodos(ModelMap model) {
