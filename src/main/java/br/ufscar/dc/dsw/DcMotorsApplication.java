@@ -1,6 +1,7 @@
 package br.ufscar.dc.dsw;
 
 import br.ufscar.dc.dsw.domain.Cliente;
+import br.ufscar.dc.dsw.service.impl.EmailService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +19,7 @@ public class DcMotorsApplication {
 		SpringApplication.run(DcMotorsApplication.class, args);
 	}
 	@Bean
-	public CommandLineRunner demo(IClienteDAO clienteDAO, BCryptPasswordEncoder encoder){
+	public CommandLineRunner demo(IClienteDAO clienteDAO, BCryptPasswordEncoder encoder, EmailService emailService){
 		return args -> {
 			if(clienteDAO.getClienteByEmail("admin") == null) {
 				Cliente admin1 = new Cliente();
