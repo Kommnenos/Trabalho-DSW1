@@ -4,8 +4,11 @@ Proposta: Criacao de um sistema de venda de automoveis, possuido operacoes relat
 
 # Descricao:
 Sistema que engloba lojas, clientes e administradores. Possuindo fluxos especificos para cada um dos papeis disponiveis.
+
 As lojas podem cadastrar excluir e editar veiculos
+
 Os clientes podem visualizar e fazer prostas de aquisicao dos veiculos veiculos
+
 Os administradores podem cadastrar, editar ou excluir lojas ou clientes
 
 # Aquitetura - MVC:
