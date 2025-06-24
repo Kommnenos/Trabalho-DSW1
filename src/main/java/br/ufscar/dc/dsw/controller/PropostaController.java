@@ -54,6 +54,17 @@ public class PropostaController {
         return "proposta/lista";
     }
 
+    @GetMapping("/listar")
+    public String listar() {
+        if(getCliente()==null){
+            return "redirect:/proposta/loja/listar";
+        }
+        else{
+            return "redirect:/proposta/cliente/listar";
+        }
+
+    }
+
     @GetMapping("/loja/listar")
     public String listarRecebidas(ModelMap model) {
 
