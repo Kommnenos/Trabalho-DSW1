@@ -54,6 +54,19 @@
                             <i class="oi oi-trash"></i>
                         </a>
                     </td>
+                    <td sec:authorize="hasRole('LOJA')">
+                        <a class="btn btn-success btn-sm"
+                           th:href="@{/proposta/aceitar/{id}(id=${proposta.id})}"
+                           onclick="return confirm('Tem certeza que deseja aceitar a proposta?');">
+                            <i class="oi oi-check"></i>
+                        </a>
+                    </td>
+                    <td sec:authorize="hasRole('LOJA')">
+                        <a class="btn btn-danger btn-sm"
+                           th:href="@{/proposta/rejeitar/{id}(id=${proposta.id})}"
+                           onclick="return confirm('Tem certeza que deseja rejeitar a proposta?');">
+                            <i class="oi oi-x"></i>
+                        </a>
                 </tr>
                 </tbody>
             </table>
