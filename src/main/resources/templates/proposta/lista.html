@@ -27,9 +27,12 @@
                 <thead style="text-align: center">
                 <tr>
                     <th>ID</th>
+                    <th th:text="#{proposta.veiculo.modelo.label}"></th>
                     <th style="width: 150px;" th:text="#{proposta.valor.label}"></th>
                     <th style="width: 150px;" th:text="#{proposta.data.label}"></th>
                     <th th:text="#{proposta.condicoesPagamento.label}"></th>
+                    <th th:text="#{proposta.loja.nome.label}" sec:authorize="hasRole('USER')"></th>
+                    <th th:text="#{proposta.cliente.email.label}" sec:authorize="hasRole('LOJA')"></th>
                     <th th:text="#{proposta.status.label}"></th>
                     <th th:text="#{acoes.label}"></th>
                 </tr>
@@ -37,9 +40,12 @@
                 <tbody style="text-align: center">
                 <tr th:each="proposta : ${propostas}">
                     <td th:text="${proposta.id}"></td>
+                    <td th:text="${proposta.veiculo.modelo}"></td>
                     <td th:text="${proposta.valor}"></td>
                     <td th:text="${proposta.data}"></td>
                     <td th:text="${proposta.condicoesPagamento}"></td>
+                    <td th:text="${proposta.veiculo.loja.nome}" sec:authorize="hasRole('USER')"></td>
+                    <td th:text="${proposta.cliente.email}" sec:authorize="hasRole('LOJA')"></td>
                     <td th:text="${proposta.status}"></td>
                     <td sec:authorize="hasRole('USER')">
                         <a class="btn btn-danger btn-sm"
