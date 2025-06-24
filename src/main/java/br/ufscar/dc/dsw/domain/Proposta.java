@@ -20,7 +20,7 @@ public class Proposta extends AbstractEntity<Long>{
     @Column(nullable = false, precision = 8, scale = 2)
     private BigDecimal valor;
 
-    //@NotNull(message = "{NotNull.proposta.veiculo}")
+    @NotNull(message = "{NotNull.proposta.veiculo}")
     @ManyToOne
     @JoinColumn(name = "veiculo_id")
     private Veiculo veiculo;

@@ -2,12 +2,8 @@ package br.ufscar.dc.dsw.dao;
 
 import java.util.List;
 
-import br.ufscar.dc.dsw.domain.Loja;
-import br.ufscar.dc.dsw.domain.StatusProposta;
+import br.ufscar.dc.dsw.domain.*;
 import org.springframework.data.repository.CrudRepository;
-
-import br.ufscar.dc.dsw.domain.Proposta;
-import br.ufscar.dc.dsw.domain.Cliente;
 
 @SuppressWarnings("unchecked")
 public interface IPropostaDAO extends CrudRepository<Proposta, Long>{
@@ -19,5 +15,7 @@ public interface IPropostaDAO extends CrudRepository<Proposta, Long>{
     Proposta save(Proposta proposta);
 
     boolean existsByClienteAndStatus(Cliente cliente, StatusProposta status);
+
+    void deleteByVeiculo(Veiculo veiculo);
 
 }

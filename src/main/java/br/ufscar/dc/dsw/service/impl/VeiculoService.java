@@ -2,6 +2,8 @@ package br.ufscar.dc.dsw.service.impl;
 
 import java.util.List;
 
+import br.ufscar.dc.dsw.dao.IPropostaDAO;
+import br.ufscar.dc.dsw.domain.Proposta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +18,12 @@ public class VeiculoService implements IVeiculoService {
 
 	@Autowired
 	IVeiculoDAO dao;
+
+	@Autowired
+	IPropostaDAO propostaDAO;
 	
 	public void salvar(Veiculo veiculo) {
 		dao.save(veiculo);
-	}
-
-	public void excluir(Long id) {
-		dao.deleteById(id);
 	}
 
 	@Transactional(readOnly = true)
@@ -39,4 +40,17 @@ public class VeiculoService implements IVeiculoService {
 	public List<Veiculo> buscarTodos() {
 		return dao.findAll();
 	}
+
+	@Override
+	public void excluir(Long id) {
+		Veiculo veiculo = dao.findById(id.longValue());
+		if(veiculo != null) {
+			propostaDAO.deleteByVeiculo(veiculo);
+			System.out.println(veiculo);
+		}
+
+		dao.deleteById(id);
+	}
+
+
 }

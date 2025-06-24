@@ -51,6 +51,10 @@ public class Veiculo extends AbstractEntity<Long> {
 	@JoinColumn(name = "loja_id")
 	private Loja loja;
 
+	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.REMOVE)
+	private List<Proposta> propostas;
+
+
 	public String getPlaca() {
 		return placa;
 	}
