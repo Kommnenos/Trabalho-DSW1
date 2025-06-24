@@ -41,9 +41,7 @@ public class VeiculoController {
 
 	@GetMapping("/listarVeiculosLoja")
 	public String listarVeiculosDaLoja(ModelMap model) {
-		UsuarioDetails usuario = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Loja loja = usuario.getLoja();
-
+		Loja loja = getLoja();
 		return String.format("redirect:/veiculo/listar/%d", loja.getId());
 	}
 
@@ -51,9 +49,6 @@ public class VeiculoController {
 	@GetMapping("/listar/{id}")
 	public String listar(@PathVariable("id") Long idLoja, ModelMap model) {
 		model.addAttribute("veiculos", veiculoService.buscarTodosPorLoja(idLoja));
-
-		System.out.println("------------------------ LISTANDO --------------------------");
-		System.out.println(veiculoService.buscarTodosPorLoja(idLoja));
 		return "veiculo/lista";
 	}
 
@@ -78,9 +73,8 @@ public class VeiculoController {
 			}
 
 		}
-		UsuarioDetails usuario = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Loja loja = usuario.getLoja();
-		veiculo.setLoja(loja);
+
+		veiculo.setLoja(getLoja());
 		veiculoService.salvar(veiculo);
 		attr.addFlashAttribute("success", "veiculo.create.success");
 		return "veiculo/lista";
@@ -105,8 +99,7 @@ public class VeiculoController {
 
 		}
 
-		UsuarioDetails usuario = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Loja loja = usuario.getLoja();
+		Loja loja = getLoja();
 		veiculo.setLoja(loja);
 
 		veiculoService.salvar(veiculo);
@@ -119,6 +112,11 @@ public class VeiculoController {
 		veiculoService.excluir(id);
 		attr.addFlashAttribute("success", "veiculo.delete.success");
 		return "redirect:/veiculo/listar";
+	}
+
+	private Loja getLoja(){
+		UsuarioDetails usuario = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return usuario.getLoja();
 	}
 }
 

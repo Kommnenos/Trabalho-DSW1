@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.ufscar.dc.dsw.domain.Proposta;
 import br.ufscar.dc.dsw.domain.Veiculo;
 import br.ufscar.dc.dsw.domain.Cliente;
+import br.ufscar.dc.dsw.domain.Loja;
 import br.ufscar.dc.dsw.security.ClienteDetails;
 import br.ufscar.dc.dsw.service.spec.IPropostaService;
 import br.ufscar.dc.dsw.service.spec.IVeiculoService;
@@ -36,6 +37,8 @@ public class PropostaController {
     @Autowired
     private IVeiculoService veiculoService;
 
+
+
     @GetMapping("/cadastrar/{id}")
     public String cadastrar(@PathVariable("id") Long idVeiculo, ModelMap model) {
         Proposta proposta = new Proposta();
@@ -45,10 +48,17 @@ public class PropostaController {
         return "proposta/cadastro";
     }
 
-    @GetMapping("/listar")
+    @GetMapping("/cliente/listar")
     public String listar(ModelMap model) {
-        model.addAttribute("propostas",service.buscarTodosPorCliente(this.getCliente()));
+        model.addAttribute("propostas",service.buscarTodosPorCliente(getCliente()));
+        return "proposta/lista";
+    }
 
+    @GetMapping("/loja/listar")
+    public String listarRecebidas(ModelMap model) {
+
+        List<Proposta> propostasRecebidas = service.buscarTodosPorLoja(getLoja());
+        model.addAttribute("propostas", propostasRecebidas);
         return "proposta/lista";
     }
 
@@ -67,7 +77,6 @@ public class PropostaController {
             }
 
             if (!errosPermitidos) {
-                System.out.println(result.getAllErrors());
                 return "proposta/cadastro";
             }
         }
@@ -87,19 +96,24 @@ public class PropostaController {
         service.salvar(proposta);
         attr.addFlashAttribute("success", "proposta.create.success");
 
-        return "redirect:/proposta/listar";
+        return "redirect:/proposta/cliente/listar";
     }
 
     @GetMapping("/excluir/{id}")
     public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
         service.excluir(id);
         attr.addFlashAttribute("success", "proposta.delete.success");
-        return "redirect:/proposta/listar";
+        return "redirect:/proposta/cliente/listar";
     }
 
     private Cliente getCliente() {
         UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return usuarioDetails.getCliente();
+    }
+
+    private Loja getLoja() {
+        UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return usuarioDetails.getLoja();
     }
 
 }
