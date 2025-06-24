@@ -41,7 +41,7 @@
                     <td th:text="${proposta.data}"></td>
                     <td th:text="${proposta.condicoesPagamento}"></td>
                     <td th:text="${proposta.status}"></td>
-                    <td>
+                    <td sec:authorize="hasRole('USER')">
                         <a class="btn btn-danger btn-sm"
                            th:href="@{/proposta/excluir/{id}(id=${proposta.id})}"
                            onclick="return confirm('Tem certeza que deseja remover a proposta?');">
