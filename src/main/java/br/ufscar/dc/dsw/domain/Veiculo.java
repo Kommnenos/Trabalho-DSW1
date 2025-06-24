@@ -54,6 +54,10 @@ public class Veiculo extends AbstractEntity<Long> {
 	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.REMOVE)
 	private List<Proposta> propostas;
 
+	@Lob
+	@Basic
+	@Column(length = 10485760) // 1MB
+	private byte[] imagem;
 
 	public String getPlaca() {
 		return placa;
@@ -123,5 +127,11 @@ public class Veiculo extends AbstractEntity<Long> {
 		return loja.getCNPJ();
 	}
 
+	public byte[] getImagem() {
+		return imagem;
+	}
 
+	public void setImagem(byte[] imagem) {
+		this.imagem = imagem;
+	}
 }

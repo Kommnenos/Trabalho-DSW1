@@ -30,6 +30,7 @@
             <table class="table table-striped table-hover table-sm">
                 <thead>
                 <tr>
+					<th style="text-align: center">Imagem</th>
                     <th>ID</th>
                     <th th:text="#{veiculos.Loja.label}" th:if="${!(listarTodos == 'false')}"></th>
                     <th th:text="#{veiculos.modelo.label}"></th>
@@ -45,6 +46,11 @@
                 </thead>
                 <tbody>
                 <tr th:each="veiculo : ${veiculos}">
+                    <td style="text-align: center">
+                        <span th:if="${veiculo.imagem}">
+                            <img th:src="@{/veiculo/download/{id} (id=${veiculo.id})}" width="160px"/>
+                        </span>
+                    </td>
                     <td th:text="${veiculo.id}"></td>
                     <td th:text="${veiculo.loja.nome}" th:if="${!(listarTodos == 'false')}"></td>
                     <td th:text="${veiculo.modelo}"></td>
