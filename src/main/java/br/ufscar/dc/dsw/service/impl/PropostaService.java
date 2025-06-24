@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.service.impl;
 import java.util.List;
 
 import br.ufscar.dc.dsw.domain.Loja;
+import br.ufscar.dc.dsw.domain.StatusProposta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,5 +40,10 @@ public class PropostaService implements IPropostaService{
     @Transactional(readOnly = true)
     public List<Proposta> buscarTodosPorLoja(Loja loja) {
         return dao.findAllByVeiculoLojaId(loja.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public boolean temPropostaAbertaParaCliente(Cliente cliente) {
+        return dao.existsByClienteAndStatus(cliente, StatusProposta.ABERTO);
     }
 }
