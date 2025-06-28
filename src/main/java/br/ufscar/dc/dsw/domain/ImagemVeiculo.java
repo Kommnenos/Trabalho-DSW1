@@ -9,8 +9,8 @@ public class ImagemVeiculo extends AbstractEntity<Long> {
     @Column(nullable = false)
     private byte[] dados;
 
-    @OneToOne
-    @JoinColumn(name = "veiculo_id", nullable = false, unique = true)
+    @ManyToOne
+    @JoinColumn(name = "veiculo_id", nullable = false)
     private Veiculo veiculo;
 
 

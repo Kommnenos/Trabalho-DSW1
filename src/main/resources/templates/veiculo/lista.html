@@ -56,7 +56,7 @@
                 <tbody>
                 <tr th:each="veiculo : ${veiculos}">
                     <td style="text-align: center">
-                        <span th:if="${veiculo.imagem}">
+                        <span th:if="${veiculo.temImagens()}">
                             <img th:src="@{/veiculo/download/{id} (id=${veiculo.id})}" width="160px"/>
                         </span>
                     </td>
