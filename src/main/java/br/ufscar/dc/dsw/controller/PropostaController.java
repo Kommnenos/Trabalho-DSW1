@@ -1,6 +1,7 @@
 package br.ufscar.dc.dsw.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -163,9 +164,18 @@ public class PropostaController {
 
             String nomeLoja = proposta.getVeiculo().getLoja().getNome();
             String placaVeiculo = proposta.getVeiculo().getPlaca();
+            BigDecimal valorContraproposta = proposta.getValorContraproposta();
+            String condicoesContraproposta = proposta.getCondicoesContraproposta();
 
             String assunto = "Proposta rejeitada";
-            String corpo = "A proposta sobre o veículo de placa: " + placaVeiculo + " da loja " + nomeLoja + " foi rejeitada.";
+            String corpo_ = "A proposta sobre o veículo de placa: " + placaVeiculo + " da loja " + nomeLoja + " foi rejeitada.\n";
+            String contraproposta = "";
+            if(valorContraproposta != null || (condicoesContraproposta !=null&& !condicoesContraproposta.isBlank()) ){
+                contraproposta = "A loja enviou uma contraproposta, com valor: R$ " + valorContraproposta + " e condições: " + condicoesContraproposta;
+            }
+            String corpo = corpo_ + contraproposta;
+
+
             String enderecoCliente = proposta.getCliente().getEmail();
             String nomeCliente = proposta.getCliente().getNome();
             enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
@@ -215,6 +225,30 @@ public class PropostaController {
         attr.addFlashAttribute("success", "proposta.reuniao.salva");
         return "redirect:/proposta/aceitar/"+id;
     }
+
+    @GetMapping("/contraproposta/{id}")
+    public String formContraproposta(@PathVariable("id") Long id, ModelMap model) {
+        Proposta proposta = service.buscarPorId(id);
+        model.addAttribute("proposta", proposta);
+        return "proposta/contraproposta";
+    }
+
+    @PostMapping("/contraproposta/salvar")
+    public String salvarContraproposta(@RequestParam("id") Long id, @RequestParam(value = "valorContraproposta", required = false) BigDecimal valorContraproposta, @RequestParam(value = "condicoesContraproposta", required = false) String condicoesContraproposta, RedirectAttributes attr) {
+        Proposta proposta = service.buscarPorId(id);
+        if(valorContraproposta != null) {
+            proposta.setValorContraproposta(valorContraproposta);
+        }
+        if (condicoesContraproposta != null) {
+            proposta.setCondicoesContraproposta(condicoesContraproposta);
+        }
+
+        service.salvar(proposta);
+        attr.addFlashAttribute("success", "Contraproposta enviada com sucesso.");
+        return "redirect:/proposta/rejeitar/" + id;
+    }
+
+
 
 
 }

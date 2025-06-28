@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body>
+<section class="container" layout:fragment="corpo">
+    <h3>Enviar Contraproposta</h3>
+
+    <form th:action="@{/proposta/contraproposta/salvar}" th:object="${proposta}" method="post">
+
+        <div class="form-group">
+            <label for="valor">Valor da Contraproposta</label>
+            <input type="number" step="0.01" id="valor" th:field="*{valorContraproposta}" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="condicoes">Condições de Pagamento</label>
+            <textarea th:field="*{condicoesContraproposta}" id="condicoes" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar</button>
+
+        <input type="hidden" th:field="*{id}"/>
+    </form>
+</section>
+</body>
+</html>

@@ -71,7 +71,7 @@
                     <td sec:authorize="hasRole('LOJA')" >
                         <a class="btn btn-danger btn-sm"
                            th:if="${proposta.status.name() == 'ABERTO'}"
-                           th:href="@{/proposta/rejeitar/{id}(id=${proposta.id})}"
+                           th:href="@{/proposta/contraproposta/{id}(id=${proposta.id})}"
                            onclick="return confirm('Tem certeza que deseja rejeitar a proposta?');">
                             <i class="oi oi-x"></i>
                         </a>
@@ -81,6 +81,7 @@
             </table>
         </div>
 
+<!--        th:href="@{/proposta/rejeitar/{id}(id=${proposta.id})}"-->
 
 
     </div>
