@@ -51,11 +51,10 @@ public class Veiculo extends AbstractEntity<Long> {
 	@JoinColumn(name = "loja_id")
 	private Loja loja;
 
-	@Lob
-	@Basic
-	@Column(length = 10485760) // 1MB
-	private byte[] imagem;
-	
+	@OneToOne(mappedBy = "veiculo", cascade = CascadeType.ALL)
+	private ImagemVeiculo imagem;
+
+
 	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.REMOVE)
 	private List<Proposta> propostas;
 
@@ -127,11 +126,21 @@ public class Veiculo extends AbstractEntity<Long> {
 		return loja.getCNPJ();
 	}
 
-	public byte[] getImagem() {
+	public ImagemVeiculo getImagem() {
 		return imagem;
 	}
 
-	public void setImagem(byte[] imagem) {
+	public void setImagem(byte[] dadosImagem) {
+		if (this.imagem == null) {
+			this.imagem = new ImagemVeiculo();
+			this.imagem.setVeiculo(this);
+		} else {
+			this.imagem.setDados(null);
+		}
+		this.imagem.setDados(dadosImagem);
+	}
+
+	public void setImagem(ImagemVeiculo imagem) {
 		this.imagem = imagem;
 	}
 }

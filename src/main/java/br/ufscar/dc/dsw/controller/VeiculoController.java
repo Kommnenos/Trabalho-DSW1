@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.controller;
 
 import java.util.List;
 
+import br.ufscar.dc.dsw.domain.ImagemVeiculo;
 import br.ufscar.dc.dsw.security.UsuarioDetails;
 import jakarta.validation.Valid;
 import java.io.IOException;
@@ -83,18 +84,22 @@ public class VeiculoController {
 	public String salvar(@Valid Veiculo veiculo, BindingResult result, RedirectAttributes attr, @RequestParam(name ="file") MultipartFile file, ModelMap model) throws IOException {
 
 		if (result.hasErrors()) {
-
 			for (FieldError error : result.getFieldErrors()) {
 				String campo = error.getField();
 				if (!campo.equals("loja")) {
 					return "/error";
 				}
 			}
-
 		}
 
 		if (!file.getOriginalFilename().isBlank()) {
-			veiculo.setImagem(file.getBytes());
+			ImagemVeiculo img = veiculo.getImagem();
+			if (img == null) {
+				img = new ImagemVeiculo();
+				img.setVeiculo(veiculo);
+				veiculo.setImagem(img);
+			}
+			img.setDados(file.getBytes());
 		}
 
 		veiculo.setLoja(getLoja());
@@ -119,16 +124,36 @@ public class VeiculoController {
 					return "/error";
 				}
 			}
-
 		}
+
+		Veiculo veiculoExistente = veiculoService.buscarPorId(veiculo.getId());
+		if (veiculoExistente == null) {
+			return "/error";
+		}
+
+		veiculoExistente.setPlaca(veiculo.getPlaca());
+		veiculoExistente.setModelo(veiculo.getModelo());
+		veiculoExistente.setChassi(veiculo.getChassi());
+		veiculoExistente.setAno(veiculo.getAno());
+		veiculoExistente.setQuilometragem(veiculo.getQuilometragem());
+		veiculoExistente.setDescricao(veiculo.getDescricao());
+		veiculoExistente.setValor(veiculo.getValor());
+		veiculoExistente.setLoja(getLoja());
 
 		if (!file.getOriginalFilename().isBlank()) {
-			veiculo.setImagem(file.getBytes());
+			ImagemVeiculo img = veiculoExistente.getImagem();
+			System.out.println("-------------------------------------------");
+			System.out.printf("imagem: " + img);
+			System.out.println("-------------------------------------------");
+			if (img == null) {
+				img = new ImagemVeiculo();
+				img.setVeiculo(veiculoExistente);
+				veiculoExistente.setImagem(img);
+			}
+			img.setDados(file.getBytes());
 		}
 
-		Loja loja = getLoja();
-		veiculo.setLoja(loja);
-		veiculoService.salvar(veiculo);
+		veiculoService.salvar(veiculoExistente);
 		attr.addFlashAttribute("success", "veiculo.edit.success");
 		return "redirect:/veiculo/listarVeiculosLoja";
 	}
@@ -148,7 +173,7 @@ public class VeiculoController {
 	@Cacheable(cacheNames = "imagens", key="#id")
 	private byte[] getImagem(Long id) {
 		Veiculo veiculo = veiculoService.buscarPorId(id);
-		return veiculo.getImagem();
+		return veiculo.getImagem().getDados();
 	}
 
 	@GetMapping(value = "/download/{id}")
