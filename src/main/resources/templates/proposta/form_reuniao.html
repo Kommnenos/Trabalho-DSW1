@@ -6,18 +6,18 @@
 <body>
 <section layout:fragment="corpo">
     <div class="container mt-4">
-        <h2>Preencher Dados de Reunião</h2>
+        <h2 th:text="#{proposta.reuniao.label}"></h2>
         <form th:action="@{/proposta/reuniao/salvar}" method="post">
             <input type="hidden" name="id" th:value="${proposta.id}" />
             <div class="form-group">
-                <label>Data e hora da reunião:</label>
-                <input type="datetime-local" class="form-control" name="dataReuniao" />
+                <label th:text="#{proposta.reuniao.data.label}" for="data"></label>
+                <input type="datetime-local" class="form-control" id="data" name="dataReuniao" />
             </div>
             <div class="form-group">
-                <label>Link da videoconferência:</label>
-                <input type="text" class="form-control" name="linkVideoconferencia" />
+                <label th:text="#{proposta.link.label}" for="link"></label>
+                <input type="text" class="form-control" id="link" name="linkVideoconferencia" />
             </div>
-            <button type="submit" class="btn btn-primary mt-2">Salvar</button>
+            <button th:text="#{button.enviar}" type="submit" class="btn btn-primary mt-2"></button>
         </form>
     </div>
 </section>
