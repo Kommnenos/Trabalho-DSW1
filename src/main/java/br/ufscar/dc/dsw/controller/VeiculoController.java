@@ -177,6 +177,12 @@ public class VeiculoController {
 		return veiculo.getImagens().get(0).getDados();
 	}
 
+	@Cacheable(cacheNames = "imagens", key="#id")
+	private byte[] getImagem(Long id, int index) {
+		Veiculo veiculo = veiculoService.buscarPorId(id);
+		return veiculo.getImagens().get(index).getDados();
+	}
+
 	@GetMapping(value = "/download/{id}")
 	public void download(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Long id) {
 		
@@ -193,6 +199,39 @@ public class VeiculoController {
 			System.out.println("Error :- " + e.getMessage());
 		}
 	}
+
+	@Transactional(readOnly = true)
+	@GetMapping("/imagens/{id}/{index}")
+	public String verImagens(@PathVariable("id") Long id, @PathVariable("index") int index, ModelMap model) {
+		Veiculo veiculo = veiculoService.buscarPorId(id);
+		if (veiculo == null) {
+			return "/error";
+		}
+		model.addAttribute("veiculo", veiculo);
+		return "veiculo/imagens";
+	}
+
+	@GetMapping(value = "/imagens/download/{id}/{index}")
+	@Cacheable(value = "imagens", key = "{#id, #index}")
+	public void downloadPorIndex(HttpServletResponse response, @PathVariable("id") Long id, @PathVariable("index") int index) throws IOException {
+
+		// set content type
+		response.setContentType("image/png");
+
+		try {
+			// copies all bytes to an output stream
+			response.getOutputStream().write(getImagem(id, index));
+
+			// flushes output stream
+			response.getOutputStream().flush();
+
+
+		} catch (IOException e) {
+			System.out.println("Error :- " + e.getMessage());
+		}
+
+	}
+
 }
 
 
