@@ -63,7 +63,7 @@
                     <td sec:authorize="hasRole('LOJA')" >
                         <a class="btn btn-success btn-sm"
                            th:if="${proposta.status.name() == 'ABERTO'}"
-                           th:href="@{/proposta/aceitar/{id}(id=${proposta.id})}"
+                           th:href="@{/proposta/reuniao/form/{id}(id=${proposta.id})}"
                            onclick="return confirm('Tem certeza que deseja aceitar a proposta?');">
                             <i class="oi oi-check"></i>
                         </a>

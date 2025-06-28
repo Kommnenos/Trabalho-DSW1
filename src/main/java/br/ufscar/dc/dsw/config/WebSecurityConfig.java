@@ -59,7 +59,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/veiculo/**").hasRole("LOJA")
 						.requestMatchers("/proposta/listar").hasAnyRole("USER","LOJA")
 						.requestMatchers("/proposta/cadastrar/**", "/proposta/cliente/**").hasRole("USER")
-						.requestMatchers("/proposta/aceitar/**").hasRole("LOJA")
+						.requestMatchers("/proposta/aceitar/**", "/proposta/reuniao/**").hasRole("LOJA")
 						.requestMatchers("/proposta/loja/**", "/proposta/rejeitar/**", "/proposta/aceitar/**").hasRole("LOJA")
 						.requestMatchers("/proposta/**" ).hasRole("USER")
 

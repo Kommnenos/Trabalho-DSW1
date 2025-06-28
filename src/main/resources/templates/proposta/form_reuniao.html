@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<section layout:fragment="corpo">
+    <div class="container mt-4">
+        <h2>Preencher Dados de Reunião</h2>
+        <form th:action="@{/proposta/reuniao/salvar}" method="post">
+            <input type="hidden" name="id" th:value="${proposta.id}" />
+            <div class="form-group">
+                <label>Data e hora da reunião:</label>
+                <input type="datetime-local" class="form-control" name="dataReuniao" />
+            </div>
+            <div class="form-group">
+                <label>Link da videoconferência:</label>
+                <input type="text" class="form-control" name="linkVideoconferencia" />
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Salvar</button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.controller;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 
@@ -136,15 +137,20 @@ public class PropostaController {
 
             String nomeLoja = proposta.getVeiculo().getLoja().getNome();
             String placaVeiculo = proposta.getVeiculo().getPlaca();
+            String diaReuniao = proposta.getDataReuniao().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            String horaReuniao = String.valueOf(proposta.getDataReuniao().toLocalTime());
+            String link = proposta.getLinkVideoconferencia();
 
             String assunto = "Proposta aceita";
-            String corpo = "Parabéns, a proposta sobre o veículo de placa: " + placaVeiculo + " da loja " + nomeLoja + " foi aceita!";
+            String corpo = "Parabéns, a proposta sobre o veículo de placa: " + placaVeiculo + " da loja " + nomeLoja + " foi aceita!\n"+
+                            "Reunião marcada para: " + diaReuniao + " às " + horaReuniao + " pelo link: " +  link;
             String enderecoCliente = proposta.getCliente().getEmail();
             String nomeCliente = proposta.getCliente().getNome();
             enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
         }
 
         return "redirect:/proposta/loja/listar";
+
     }
 
     @GetMapping("/rejeitar/{id}")
@@ -187,5 +193,28 @@ public class PropostaController {
 
 
     }
+
+    @GetMapping("/reuniao/form/{id}")
+    public String preencherReuniao(@PathVariable("id") Long id, ModelMap model) {
+        Proposta proposta = service.buscarPorId(id);
+        model.addAttribute("proposta", proposta);
+        return "proposta/form_reuniao";
+    }
+
+    @PostMapping("/reuniao/salvar")
+    public String salvarReuniao(@RequestParam("id") Long id, @RequestParam(required = true) String dataReuniao, @RequestParam(required = true) String linkVideoconferencia, RedirectAttributes attr) {
+
+        Proposta proposta = service.buscarPorId(id);
+        if (dataReuniao != null && !dataReuniao.isBlank()) {
+            proposta.setDataReuniao(LocalDateTime.parse(dataReuniao));
+        }
+        if (linkVideoconferencia != null && !linkVideoconferencia.isBlank()) {
+            proposta.setLinkVideoconferencia(linkVideoconferencia);
+        }
+        service.salvar(proposta);
+        attr.addFlashAttribute("success", "proposta.reuniao.salva");
+        return "redirect:/proposta/aceitar/"+id;
+    }
+
 
 }
