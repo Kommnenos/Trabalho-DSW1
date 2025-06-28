@@ -36,6 +36,7 @@ public class VeiculoService implements IVeiculoService {
 		return dao.getVeiculoByLoja(lojaId);
 	}
 
+
 	@Transactional(readOnly = true)
 	public List<Veiculo> buscarTodos() {
 		return dao.findAll();
@@ -51,6 +52,19 @@ public class VeiculoService implements IVeiculoService {
 
 		dao.deleteById(id);
 	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<Veiculo> buscarTodosPorModelo(String modelo) {
+		return dao.findAllByModeloContainingIgnoreCase(modelo);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<Veiculo> buscarTodosPorLojaEModelo(Long lojaId, String modelo) {
+		return dao.findAllByLojaIdAndModeloContainingIgnoreCase(lojaId, modelo);
+	}
+
 
 
 }
