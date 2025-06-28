@@ -17,5 +17,13 @@ public interface IVeiculoService {
 
 	@Transactional(readOnly = true)
 	public List<Veiculo> buscarTodosPorLoja(Long lojaId);
-	
+
+	@Transactional(readOnly = true)
+	public List<Veiculo> buscarTodosPorModelo(String modelo);
+
+	@Transactional(readOnly = true)
+	List<Veiculo> buscarTodosPorLojaEModelo(Long lojaId, String modelo);
+
+
+
 }

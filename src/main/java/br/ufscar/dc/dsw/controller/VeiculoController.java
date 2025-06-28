@@ -42,19 +42,40 @@ public class VeiculoController {
 	}
 
 	@GetMapping("/listarVeiculosLoja")
-	public String listarVeiculosDaLoja(ModelMap model) {
+	public String listarVeiculosDaLoja(@RequestParam(value = "modelo", required = false) String modelo, ModelMap model) {
+		List<Veiculo> veiculos;
 		Loja loja = getLoja();
-		model.addAttribute("veiculos", veiculoService.buscarTodosPorLoja(loja.getId()));
+
+		if (modelo == null || modelo.isBlank()) {
+			veiculos = veiculoService.buscarTodosPorLoja(loja.getId());
+		} else {
+			modelo = modelo.replaceAll("\\s+$", ""); //removendo espaços a direita do ultimo caractere da string usada pra filtrar
+			veiculos = veiculoService.buscarTodosPorLojaEModelo(loja.getId(), modelo);
+		}
+
+		model.addAttribute("veiculos", veiculos);
 		model.addAttribute("listarTodos", "false");
+		model.addAttribute("modelo", modelo);
+
 		return "veiculo/lista";
 	}
 
 
 	@GetMapping("/listarTodos")
-	public String listarTodos(ModelMap model) {
-		model.addAttribute("veiculos", veiculoService.buscarTodos());
+	public String listarTodos(@RequestParam(value = "modelo", required = false) String modelo, ModelMap model) {
+		List<Veiculo> veiculos;
+
+		if (modelo == null || modelo.isBlank()) {
+			veiculos = veiculoService.buscarTodos();
+		} else {
+			modelo = modelo.replaceAll("\\s+$", ""); //removendo espaços a direita do ultimo caractere da string usada pra filtrar
+			veiculos = veiculoService.buscarTodosPorModelo(modelo);
+		}
+
+		model.addAttribute("veiculos", veiculos);
 		model.addAttribute("listarTodos", "true");
-		System.out.println(veiculoService.buscarTodos());
+		model.addAttribute("modelo", modelo);
+
 		return "veiculo/lista";
 	}
 
