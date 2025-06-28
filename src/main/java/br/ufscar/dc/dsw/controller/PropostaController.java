@@ -129,39 +129,43 @@ public class PropostaController {
     @GetMapping("/aceitar/{id}")
     public String aceitar(@PathVariable("id") Long id, RedirectAttributes attr) throws UnsupportedEncodingException {
         Proposta proposta = service.buscarPorId(id);
-        proposta.setStatus(StatusProposta.ACEITO);
-        service.salvar(proposta);
-        attr.addFlashAttribute("success", "proposta.aceitar.success");
+        if(proposta.getStatus().equals(StatusProposta.ABERTO)) {
+            proposta.setStatus(StatusProposta.ACEITO);
+            service.salvar(proposta);
+            attr.addFlashAttribute("success", "proposta.aceitar.success");
 
-        String nomeLoja = proposta.getVeiculo().getLoja().getNome();
-        String placaVeiculo = proposta.getVeiculo().getPlaca();
+            String nomeLoja = proposta.getVeiculo().getLoja().getNome();
+            String placaVeiculo = proposta.getVeiculo().getPlaca();
 
-        String assunto = "Proposta aceita";
-        String corpo = "Parabéns, a proposta sobre o veículo de placa: "+placaVeiculo+" da loja "+nomeLoja+" foi aceita!";
-        String enderecoCliente = proposta.getCliente().getEmail();
-        String nomeCliente = proposta.getCliente().getNome();
-        enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
+            String assunto = "Proposta aceita";
+            String corpo = "Parabéns, a proposta sobre o veículo de placa: " + placaVeiculo + " da loja " + nomeLoja + " foi aceita!";
+            String enderecoCliente = proposta.getCliente().getEmail();
+            String nomeCliente = proposta.getCliente().getNome();
+            enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
+        }
 
-        return "redirect:/proposta/cliente/listar";
+        return "redirect:/proposta/loja/listar";
     }
 
     @GetMapping("/rejeitar/{id}")
     public String rejeitar(@PathVariable("id") Long id, RedirectAttributes attr) throws UnsupportedEncodingException {
         Proposta proposta = service.buscarPorId(id);
-        proposta.setStatus(StatusProposta.NAO_ACEITO);
-        service.salvar(proposta);
-        attr.addFlashAttribute("success", "proposta.rejeitar.success");
+        if(proposta.getStatus() == StatusProposta.ABERTO) {
+            proposta.setStatus(StatusProposta.NAO_ACEITO);
+            service.salvar(proposta);
+            attr.addFlashAttribute("success", "proposta.rejeitar.success");
 
-        String nomeLoja = proposta.getVeiculo().getLoja().getNome();
-        String placaVeiculo = proposta.getVeiculo().getPlaca();
+            String nomeLoja = proposta.getVeiculo().getLoja().getNome();
+            String placaVeiculo = proposta.getVeiculo().getPlaca();
 
-        String assunto = "Proposta rejeitada";
-        String corpo = "A proposta sobre o veículo de placa: "+placaVeiculo+" da loja "+nomeLoja+" foi rejeitada.";
-        String enderecoCliente = proposta.getCliente().getEmail();
-        String nomeCliente = proposta.getCliente().getNome();
-        enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
+            String assunto = "Proposta rejeitada";
+            String corpo = "A proposta sobre o veículo de placa: " + placaVeiculo + " da loja " + nomeLoja + " foi rejeitada.";
+            String enderecoCliente = proposta.getCliente().getEmail();
+            String nomeCliente = proposta.getCliente().getNome();
+            enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
+        }
 
-        return "redirect:/proposta/cliente/listar";
+        return "redirect:/proposta/loja/listar";
     }
 
 
