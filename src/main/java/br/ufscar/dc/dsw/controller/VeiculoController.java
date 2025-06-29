@@ -1,7 +1,9 @@
 package br.ufscar.dc.dsw.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import br.ufscar.dc.dsw.domain.ImagemVeiculo;
 import br.ufscar.dc.dsw.security.UsuarioDetails;
 import jakarta.validation.Valid;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -41,6 +44,7 @@ public class VeiculoController {
 		return "veiculo/cadastro";
 	}
 
+	@Transactional(readOnly = true)
 	@GetMapping("/listarVeiculosLoja")
 	public String listarVeiculosDaLoja(@RequestParam(value = "modelo", required = false) String modelo, ModelMap model) {
 		List<Veiculo> veiculos;
@@ -61,6 +65,7 @@ public class VeiculoController {
 	}
 
 
+	@Transactional(readOnly = true)
 	@GetMapping("/listarTodos")
 	public String listarTodos(@RequestParam(value = "modelo", required = false) String modelo, ModelMap model) {
 		List<Veiculo> veiculos;
@@ -80,23 +85,30 @@ public class VeiculoController {
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(@Valid Veiculo veiculo, BindingResult result, RedirectAttributes attr, @RequestParam(name ="file") MultipartFile file, ModelMap model) throws IOException {
+	public String salvar(@Valid Veiculo veiculo, BindingResult result, RedirectAttributes attr, @RequestParam(name ="files") MultipartFile[] files, ModelMap model) throws IOException {
 
 		if (result.hasErrors()) {
-
 			for (FieldError error : result.getFieldErrors()) {
 				String campo = error.getField();
 				if (!campo.equals("loja")) {
 					return "/error";
 				}
 			}
-
 		}
 
-		if (!file.getOriginalFilename().isBlank()) {
-			veiculo.setImagem(file.getBytes());
+		List<ImagemVeiculo> imagens = new ArrayList<>();
+		int limite = Math.min(files.length, 10);
+		for (int i = 0; i < limite; i++) {
+			MultipartFile file = files[i];
+			if (!file.getOriginalFilename().isBlank()) {
+				ImagemVeiculo img = new ImagemVeiculo();
+				img.setDados(file.getBytes());
+				img.setVeiculo(veiculo);
+				imagens.add(img);
+			}
 		}
-
+		System.out.println(imagens);
+		veiculo.setImagens(imagens);
 		veiculo.setLoja(getLoja());
 		veiculoService.salvar(veiculo);
 		attr.addFlashAttribute("success", "veiculo.create.success");
@@ -110,7 +122,7 @@ public class VeiculoController {
 	}
 
 	@PostMapping("/editar")
-	public String editar(@Valid Veiculo veiculo, BindingResult result, @RequestParam(name ="file") MultipartFile file, RedirectAttributes attr) throws IOException {
+	public String editar(@Valid Veiculo veiculo, BindingResult result, @RequestParam(name ="files") MultipartFile[] files, RedirectAttributes attr) throws IOException {
 
 		if (result.hasErrors()) {
 			for (FieldError error : result.getFieldErrors()) {
@@ -119,15 +131,29 @@ public class VeiculoController {
 					return "/error";
 				}
 			}
-
 		}
 
-		if (!file.getOriginalFilename().isBlank()) {
-			veiculo.setImagem(file.getBytes());
+		Veiculo veiculoExistente = veiculoService.buscarPorId(veiculo.getId());
+		if (veiculoExistente == null) {
+			return "/error";
 		}
 
-		Loja loja = getLoja();
-		veiculo.setLoja(loja);
+		veiculo.getImagens().clear();
+
+		List<ImagemVeiculo> imagens = new ArrayList<>();
+		int limite = Math.min(files.length, 10);
+		for (int i = 0; i < limite; i++) {
+			MultipartFile file = files[i];
+			if (!file.getOriginalFilename().isBlank()) {
+				ImagemVeiculo img = new ImagemVeiculo();
+				img.setDados(file.getBytes());
+				img.setVeiculo(veiculo);
+				imagens.add(img);
+			}
+		}
+
+		veiculo.setImagens(imagens);
+		veiculo.setLoja(getLoja());
 		veiculoService.salvar(veiculo);
 		attr.addFlashAttribute("success", "veiculo.edit.success");
 		return "redirect:/veiculo/listarVeiculosLoja";
@@ -148,7 +174,13 @@ public class VeiculoController {
 	@Cacheable(cacheNames = "imagens", key="#id")
 	private byte[] getImagem(Long id) {
 		Veiculo veiculo = veiculoService.buscarPorId(id);
-		return veiculo.getImagem();
+		return veiculo.getImagens().get(0).getDados();
+	}
+
+	@Cacheable(cacheNames = "imagens", key="#id")
+	private byte[] getImagem(Long id, int index) {
+		Veiculo veiculo = veiculoService.buscarPorId(id);
+		return veiculo.getImagens().get(index).getDados();
 	}
 
 	@GetMapping(value = "/download/{id}")
@@ -167,6 +199,39 @@ public class VeiculoController {
 			System.out.println("Error :- " + e.getMessage());
 		}
 	}
+
+	@Transactional(readOnly = true)
+	@GetMapping("/imagens/{id}/{index}")
+	public String verImagens(@PathVariable("id") Long id, @PathVariable("index") int index, ModelMap model) {
+		Veiculo veiculo = veiculoService.buscarPorId(id);
+		if (veiculo == null) {
+			return "/error";
+		}
+		model.addAttribute("veiculo", veiculo);
+		return "veiculo/imagens";
+	}
+
+	@GetMapping(value = "/imagens/download/{id}/{index}")
+	@Cacheable(value = "imagens", key = "{#id, #index}")
+	public void downloadPorIndex(HttpServletResponse response, @PathVariable("id") Long id, @PathVariable("index") int index) throws IOException {
+
+		// set content type
+		response.setContentType("image/png");
+
+		try {
+			// copies all bytes to an output stream
+			response.getOutputStream().write(getImagem(id, index));
+
+			// flushes output stream
+			response.getOutputStream().flush();
+
+
+		} catch (IOException e) {
+			System.out.println("Error :- " + e.getMessage());
+		}
+
+	}
+
 }
 
 

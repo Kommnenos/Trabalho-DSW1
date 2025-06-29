@@ -41,7 +41,7 @@
                 <tbody style="text-align: center">
                 <tr th:each="proposta : ${propostas}">
                     <td style="text-align: center">
-                        <span th:if="${proposta.veiculo.imagem}">
+                        <span th:if="${proposta.veiculo.temImagens()}">
                             <img th:src="@{/veiculo/download/{id} (id=${proposta.veiculo.id})}" width="160px"/>
                         </span>
                     </td>

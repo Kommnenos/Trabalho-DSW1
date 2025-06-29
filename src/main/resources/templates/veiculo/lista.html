@@ -28,10 +28,10 @@
 
         <form th:action="${listarTodos == 'true'} ? @{/veiculo/listarTodos} : @{/veiculo/listarVeiculosLoja}" method="get" class="form-inline mb-3">
             <label>
-                <input type="text" name="modelo" class="form-control mr-2" placeholder="Filtrar por modelo"
+                <input type="text" name="modelo" class="form-control mr-2" th:placeholder="#{veiculos.filtrarModelo.label}"
                        th:value="${modelo}">
             </label>
-            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <button th:text="#{veiculos.filtrar.label}" type="submit" class="btn btn-primary"></button>
         </form>
 
 
@@ -39,7 +39,7 @@
             <table class="table table-striped table-hover table-sm">
                 <thead>
                 <tr>
-					<th style="text-align: center">Imagem</th>
+					<th th:text="#{veiculos.imagem.label}" style="text-align: center"></th>
                     <th>ID</th>
                     <th th:text="#{veiculos.Loja.label}" th:if="${!(listarTodos == 'false')}"></th>
                     <th th:text="#{veiculos.modelo.label}"></th>
@@ -56,7 +56,7 @@
                 <tbody>
                 <tr th:each="veiculo : ${veiculos}">
                     <td style="text-align: center">
-                        <span th:if="${veiculo.imagem}">
+                        <span th:if="${veiculo.temImagens()}">
                             <img th:src="@{/veiculo/download/{id} (id=${veiculo.id})}" width="160px"/>
                         </span>
                     </td>
@@ -69,7 +69,7 @@
                     <td th:text="${veiculo.placa}"></td>
                     <td th:text="${veiculo.quilometragem}"></td>
                     <td th:text="${veiculo.descricao}"></td>
-                    <td sec:authorize="isAuthenticated()">
+                    <td style="width: 90px" sec:authorize="isAuthenticated()">
                         <a class="btn btn-info btn-sm" th:if="${listarTodos != 'true'}" sec:authorize="hasRole('LOJA')"
                            th:href="@{/veiculo/editar/{id}(id=${veiculo.id})}" >
                             <i class="oi oi-pencil"></i>
@@ -80,6 +80,11 @@
                            th:onclick="|return confirm('#{veiculos.excluir.confirm}');|">
 
                             <i class="oi oi-trash"></i>
+                        </a>
+
+                        <a class="btn btn-secondary btn-sm" sec:authorize="hasRole('USER')"
+                           th:href="@{/veiculo/imagens/{id}/0(id=${veiculo.id})}">
+                            <i class="oi oi-image"></i>
                         </a>
 
                         <a class="btn btn-success btn-sm" sec:authorize="hasRole('USER')"
