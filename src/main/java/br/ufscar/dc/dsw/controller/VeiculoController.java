@@ -91,7 +91,7 @@ public class VeiculoController {
 			for (FieldError error : result.getFieldErrors()) {
 				String campo = error.getField();
 				if (!campo.equals("loja")) {
-					return "/error";
+					return "veiculo/cadastro";
 				}
 			}
 		}
