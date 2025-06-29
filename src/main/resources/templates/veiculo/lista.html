@@ -49,7 +49,7 @@
                     <th th:text="#{veiculos.placa.label}"></th>
                     <th th:text="#{veiculos.quilometragem.label}"></th>
                     <th th:text="#{veiculos.descricao.label}"></th>
-                    <th th:text="#{acoes.label}"   th:if="${!(listarTodos == 'true' and #authorization.expression('hasAnyRole(''LOJA'',''ADMIN'')'))}" sec:authorize="isAuthenticated()"></th>
+                    <th th:text="#{acoes.label}"></th>
 
                 </tr>
                 </thead>
@@ -69,7 +69,7 @@
                     <td th:text="${veiculo.placa}"></td>
                     <td th:text="${veiculo.quilometragem}"></td>
                     <td th:text="${veiculo.descricao}"></td>
-                    <td style="width: 90px" sec:authorize="isAuthenticated()">
+                    <td style="width: 90px">
                         <a class="btn btn-info btn-sm" th:if="${listarTodos != 'true'}" sec:authorize="hasRole('LOJA')"
                            th:href="@{/veiculo/editar/{id}(id=${veiculo.id})}" >
                             <i class="oi oi-pencil"></i>
@@ -82,7 +82,8 @@
                             <i class="oi oi-trash"></i>
                         </a>
 
-                        <a class="btn btn-secondary btn-sm" sec:authorize="hasRole('USER')"
+                        <a class="btn btn-secondary btn-sm"
+                           th:if="${veiculo.temImagens()}"
                            th:href="@{/veiculo/imagens/{id}/0(id=${veiculo.id})}">
                             <i class="oi oi-image"></i>
                         </a>

@@ -1,8 +1,10 @@
 package br.ufscar.dc.dsw.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 
@@ -129,39 +131,57 @@ public class PropostaController {
     @GetMapping("/aceitar/{id}")
     public String aceitar(@PathVariable("id") Long id, RedirectAttributes attr) throws UnsupportedEncodingException {
         Proposta proposta = service.buscarPorId(id);
-        proposta.setStatus(StatusProposta.ACEITO);
-        service.salvar(proposta);
-        attr.addFlashAttribute("success", "proposta.aceitar.success");
+        if(proposta.getStatus().equals(StatusProposta.ABERTO)) {
+            proposta.setStatus(StatusProposta.ACEITO);
+            service.salvar(proposta);
+            attr.addFlashAttribute("success", "proposta.aceitar.success");
 
-        String nomeLoja = proposta.getVeiculo().getLoja().getNome();
-        String placaVeiculo = proposta.getVeiculo().getPlaca();
+            String nomeLoja = proposta.getVeiculo().getLoja().getNome();
+            String placaVeiculo = proposta.getVeiculo().getPlaca();
+            String diaReuniao = proposta.getDataReuniao().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            String horaReuniao = String.valueOf(proposta.getDataReuniao().toLocalTime());
+            String link = proposta.getLinkVideoconferencia();
 
-        String assunto = "Proposta aceita";
-        String corpo = "Parabéns, a proposta sobre o veículo de placa: "+placaVeiculo+" da loja "+nomeLoja+" foi aceita!";
-        String enderecoCliente = proposta.getCliente().getEmail();
-        String nomeCliente = proposta.getCliente().getNome();
-        enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
+            String assunto = "Proposta aceita";
+            String corpo = "Parabéns, a proposta sobre o veículo de placa: " + placaVeiculo + " da loja " + nomeLoja + " foi aceita!\n"+
+                            "Reunião marcada para: " + diaReuniao + " às " + horaReuniao + " pelo link: " +  link;
+            String enderecoCliente = proposta.getCliente().getEmail();
+            String nomeCliente = proposta.getCliente().getNome();
+            enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
+        }
 
-        return "redirect:/proposta/cliente/listar";
+        return "redirect:/proposta/loja/listar";
+
     }
 
     @GetMapping("/rejeitar/{id}")
     public String rejeitar(@PathVariable("id") Long id, RedirectAttributes attr) throws UnsupportedEncodingException {
         Proposta proposta = service.buscarPorId(id);
-        proposta.setStatus(StatusProposta.NAO_ACEITO);
-        service.salvar(proposta);
-        attr.addFlashAttribute("success", "proposta.rejeitar.success");
+        if(proposta.getStatus() == StatusProposta.ABERTO) {
+            proposta.setStatus(StatusProposta.NAO_ACEITO);
+            service.salvar(proposta);
+            attr.addFlashAttribute("success", "proposta.rejeitar.success");
 
-        String nomeLoja = proposta.getVeiculo().getLoja().getNome();
-        String placaVeiculo = proposta.getVeiculo().getPlaca();
+            String nomeLoja = proposta.getVeiculo().getLoja().getNome();
+            String placaVeiculo = proposta.getVeiculo().getPlaca();
+            BigDecimal valorContraproposta = proposta.getValorContraproposta();
+            String condicoesContraproposta = proposta.getCondicoesContraproposta();
 
-        String assunto = "Proposta rejeitada";
-        String corpo = "A proposta sobre o veículo de placa: "+placaVeiculo+" da loja "+nomeLoja+" foi rejeitada.";
-        String enderecoCliente = proposta.getCliente().getEmail();
-        String nomeCliente = proposta.getCliente().getNome();
-        enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
+            String assunto = "Proposta rejeitada";
+            String corpo_ = "A proposta sobre o veículo de placa: " + placaVeiculo + " da loja " + nomeLoja + " foi rejeitada.\n";
+            String contraproposta = "";
+            if(valorContraproposta != null || (condicoesContraproposta !=null&& !condicoesContraproposta.isBlank()) ){
+                contraproposta = "A loja enviou uma contraproposta, com valor: R$ " + valorContraproposta + " e condições: " + condicoesContraproposta;
+            }
+            String corpo = corpo_ + contraproposta;
 
-        return "redirect:/proposta/cliente/listar";
+
+            String enderecoCliente = proposta.getCliente().getEmail();
+            String nomeCliente = proposta.getCliente().getNome();
+            enviarEmail(assunto, corpo, enderecoCliente, nomeCliente);
+        }
+
+        return "redirect:/proposta/loja/listar";
     }
 
 
@@ -183,5 +203,52 @@ public class PropostaController {
 
 
     }
+
+    @GetMapping("/reuniao/form/{id}")
+    public String preencherReuniao(@PathVariable("id") Long id, ModelMap model) {
+        Proposta proposta = service.buscarPorId(id);
+        model.addAttribute("proposta", proposta);
+        return "proposta/form_reuniao";
+    }
+
+    @PostMapping("/reuniao/salvar")
+    public String salvarReuniao(@RequestParam("id") Long id, @RequestParam(required = true) String dataReuniao, @RequestParam(required = true) String linkVideoconferencia, RedirectAttributes attr) {
+
+        Proposta proposta = service.buscarPorId(id);
+        if (dataReuniao != null && !dataReuniao.isBlank()) {
+            proposta.setDataReuniao(LocalDateTime.parse(dataReuniao));
+        }
+        if (linkVideoconferencia != null && !linkVideoconferencia.isBlank()) {
+            proposta.setLinkVideoconferencia(linkVideoconferencia);
+        }
+        service.salvar(proposta);
+        attr.addFlashAttribute("success", "proposta.reuniao.salva");
+        return "redirect:/proposta/aceitar/"+id;
+    }
+
+    @GetMapping("/contraproposta/{id}")
+    public String formContraproposta(@PathVariable("id") Long id, ModelMap model) {
+        Proposta proposta = service.buscarPorId(id);
+        model.addAttribute("proposta", proposta);
+        return "proposta/contraproposta";
+    }
+
+    @PostMapping("/contraproposta/salvar")
+    public String salvarContraproposta(@RequestParam("id") Long id, @RequestParam(value = "valorContraproposta", required = false) BigDecimal valorContraproposta, @RequestParam(value = "condicoesContraproposta", required = false) String condicoesContraproposta, RedirectAttributes attr) {
+        Proposta proposta = service.buscarPorId(id);
+        if(valorContraproposta != null) {
+            proposta.setValorContraproposta(valorContraproposta);
+        }
+        if (condicoesContraproposta != null) {
+            proposta.setCondicoesContraproposta(condicoesContraproposta);
+        }
+
+        service.salvar(proposta);
+        attr.addFlashAttribute("success", "Contraproposta enviada com sucesso.");
+        return "redirect:/proposta/rejeitar/" + id;
+    }
+
+
+
 
 }

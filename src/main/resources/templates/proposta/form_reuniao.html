@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<section layout:fragment="corpo">
+    <div class="container mt-4">
+        <h2 th:text="#{proposta.reuniao.label}"></h2>
+        <form th:action="@{/proposta/reuniao/salvar}" method="post">
+            <input type="hidden" name="id" th:value="${proposta.id}" />
+            <div class="form-group">
+                <label th:text="#{proposta.reuniao.data.label}" for="data"></label>
+                <input type="datetime-local" class="form-control" id="data" name="dataReuniao" />
+            </div>
+            <div class="form-group">
+                <label th:text="#{proposta.link.label}" for="link"></label>
+                <input type="text" class="form-control" id="link" name="linkVideoconferencia" />
+            </div>
+            <button th:text="#{button.enviar}" type="submit" class="btn btn-primary mt-2"></button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

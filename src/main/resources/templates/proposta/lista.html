@@ -60,25 +60,26 @@
                             <i class="oi oi-trash"></i>
                         </a>
                     </td>
-                    <td sec:authorize="hasRole('LOJA')">
+                    <td sec:authorize="hasRole('LOJA')" >
                         <a class="btn btn-success btn-sm"
-                           th:href="@{/proposta/aceitar/{id}(id=${proposta.id})}"
-                           onclick="return confirm('Tem certeza que deseja aceitar a proposta?');">
+                           th:if="${proposta.status.name() == 'ABERTO'}"
+                           th:href="@{/proposta/reuniao/form/{id}(id=${proposta.id})}"
+                           th:onclick="|return confirm('#{proposta.aceitar.confirm}');|">
                             <i class="oi oi-check"></i>
                         </a>
                     </td>
-                    <td sec:authorize="hasRole('LOJA')">
+                    <td sec:authorize="hasRole('LOJA')" >
                         <a class="btn btn-danger btn-sm"
-                           th:href="@{/proposta/rejeitar/{id}(id=${proposta.id})}"
-                           onclick="return confirm('Tem certeza que deseja rejeitar a proposta?');">
+                           th:if="${proposta.status.name() == 'ABERTO'}"
+                           th:href="@{/proposta/contraproposta/{id}(id=${proposta.id})}"
+                           th:onclick="|return confirm('#{proposta.rejeitar.confirm}');|">
                             <i class="oi oi-x"></i>
                         </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
-
 
     </div>
 
