@@ -19,9 +19,10 @@ Pastas divididas em modelo, visão e controlador.
 - Gabriel Henrique Rodrigues: Criação da classe de Proposta, Cliente, fluxo de login, autenticação e criação de propostas
 - Pedro Lealdini: Criação da interface inicial, homepage, fluxo de cadastro, listagem de veículos e disparo de email.
 
-# Comando para execução:
+# Passos para execução:
  - Criar um database no PostgreSQL com o nome "DCMotors"
- - executar mvn spring-boot:run
+ - Configurar o arquivo application.properties com usuário e senha corretos do PostgreSQL
+ - Executar 'mvn spring-boot:run' na raiz do projeto
 
 # Observação:
 - Implementados todos os pontos do arquivo de requisitos, com exceção do envio de contrapropostas e link da reunião (ainda em desenvolvimento)
