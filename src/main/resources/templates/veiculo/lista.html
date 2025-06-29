@@ -83,6 +83,7 @@
                         </a>
 
                         <a class="btn btn-secondary btn-sm"
+                           th:if="${veiculo.temImagens()}"
                            th:href="@{/veiculo/imagens/{id}/0(id=${veiculo.id})}">
                             <i class="oi oi-image"></i>
                         </a>
