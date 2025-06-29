@@ -93,7 +93,9 @@
                 <div class="form-group col-md-6">
                     <label th:text="#{veiculo.imagens.label}" for="files"></label>
                     <input type="file" id="files" name="files" accept="image/png, image/gif, image/jpeg" multiple="multiple" />
-
+                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                        <span th:text="${error}"></span>
+                    </div>
 
                 </div>
 

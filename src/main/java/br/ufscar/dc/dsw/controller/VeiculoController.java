@@ -91,10 +91,11 @@ public class VeiculoController {
 			for (FieldError error : result.getFieldErrors()) {
 				String campo = error.getField();
 				if (!campo.equals("loja")) {
-					return "/error";
+					return "veiculo/cadastro";
 				}
 			}
 		}
+
 
 		List<ImagemVeiculo> imagens = new ArrayList<>();
 		int limite = Math.min(files.length, 10);
@@ -128,7 +129,7 @@ public class VeiculoController {
 			for (FieldError error : result.getFieldErrors()) {
 				String campo = error.getField();
 				if (!campo.equals("loja")) {
-					return "/error";
+					return "veiculo/cadastro";
 				}
 			}
 		}
