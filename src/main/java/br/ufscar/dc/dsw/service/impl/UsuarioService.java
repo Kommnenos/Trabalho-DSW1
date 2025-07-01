@@ -1,6 +1,7 @@
 package br.ufscar.dc.dsw.service.impl;
 
 import br.ufscar.dc.dsw.dao.IUsuarioDAO;
+import br.ufscar.dc.dsw.domain.Cliente;
 import br.ufscar.dc.dsw.domain.Loja;
 import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.service.spec.IUsuarioService;
@@ -32,6 +33,16 @@ public class UsuarioService implements IUsuarioService {
     @Transactional(readOnly = true)
     public List<Usuario> buscarTodos() {
         return dao.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Cliente> buscarTodosClientes() {
+        return dao.findAllClientes();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Loja> buscarTodosLojas() {
+        return dao.findAllLojas();
     }
 
     @Transactional(readOnly = true)

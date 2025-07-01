@@ -35,7 +35,7 @@ public class LojaAdminController {
 	
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
-		model.addAttribute("lojas",service.buscarTodos());
+		model.addAttribute("lojas",service.buscarTodosLojas());
 		return "loja/lista";
 	}
 	

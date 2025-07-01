@@ -33,7 +33,7 @@ public class ClienteAdminController {
 
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
-		model.addAttribute("clientes",service.buscarTodos());
+		model.addAttribute("clientes", service.buscarTodosClientes());
 		return "cliente/lista";
 	}
 

@@ -8,13 +8,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import br.ufscar.dc.dsw.dao.IUsuarioDAO;
-import br.ufscar.dc.dsw.domain.Cliente;
 
 public class UsuarioDetailsServiceImpl implements UserDetailsService{
     @Autowired
     private IUsuarioDAO dao;
-
-
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
