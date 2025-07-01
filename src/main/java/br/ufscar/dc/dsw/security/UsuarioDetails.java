@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.security;
 import java.util.Arrays;
 import java.util.Collection;
 
+import br.ufscar.dc.dsw.domain.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,41 +13,34 @@ import br.ufscar.dc.dsw.domain.Loja;
 
 public class UsuarioDetails implements UserDetails {
 
-    private Cliente cliente;
-    private Loja loja;
+    private Usuario usuario;
 
-    public UsuarioDetails(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public UsuarioDetails(Loja loja) {
-        this.loja = loja;
+    public UsuarioDetails(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Cliente getCliente() {
-        return cliente;
+        return (usuario instanceof Cliente) ? (Cliente) usuario : null;
     }
 
     public Loja getLoja() {
-        return loja;
+        return (usuario instanceof Loja) ? (Loja) usuario : null;
     }
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (cliente != null) {
-            return Arrays.asList(new SimpleGrantedAuthority(cliente.getRole()));
-        } else {
-            return Arrays.asList(new SimpleGrantedAuthority("ROLE_LOJA"));
-        }
+        return Arrays.asList(new SimpleGrantedAuthority(usuario.getRole()));
     }
 
     @Override
     public String getPassword() {
-        return (cliente != null) ? cliente.getSenha() : loja.getSenha();
+        return usuario.getSenha();
     }
 
     @Override
     public String getUsername() {
-        return (cliente != null) ? cliente.getEmail() : loja.getEmail();
+        return usuario.getEmail();
     }
 
     @Override

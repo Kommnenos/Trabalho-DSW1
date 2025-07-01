@@ -1,6 +1,8 @@
 package br.ufscar.dc.dsw;
 
+import br.ufscar.dc.dsw.dao.IUsuarioDAO;
 import br.ufscar.dc.dsw.domain.Cliente;
+import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.service.impl.EmailService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,14 +24,11 @@ public class DcMotorsApplication {
 	public CommandLineRunner demo(IClienteDAO clienteDAO, BCryptPasswordEncoder encoder, EmailService emailService){
 		return args -> {
 			if(clienteDAO.getClienteByEmail("admin") == null) {
-				Cliente admin1 = new Cliente();
+				Usuario admin1 = new Usuario();
 				admin1.setNome("Administrador");
 				admin1.setEmail("admin");
 				admin1.setSenha(encoder.encode("admin"));
-				admin1.setCPF("012.345.678-90");
-				admin1.setRole("ROLE_ADMIN");
-				admin1.setEnabled(true);
-				clienteDAO.save(admin1);
+				IUsuarioDAO.save(admin1);
 			}
 
 		};

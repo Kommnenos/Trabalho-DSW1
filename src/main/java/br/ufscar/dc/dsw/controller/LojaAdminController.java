@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.controller;
 import br.ufscar.dc.dsw.domain.Cliente;
 import br.ufscar.dc.dsw.domain.Loja;
 import br.ufscar.dc.dsw.service.spec.ILojaService;
+import br.ufscar.dc.dsw.service.spec.IUsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class LojaAdminController {
 	
 	@Autowired
-	private ILojaService service;
+	private IUsuarioService service;
 
 	@Autowired
 	private BCryptPasswordEncoder encoder;
@@ -78,7 +79,7 @@ public class LojaAdminController {
 		}
 
 		if (loja.getSenha() == null || loja.getSenha().isEmpty()) {
-			Loja lojaExistente = service.buscarPorId(loja.getId());
+			Loja lojaExistente = (Loja) service.buscarPorId(loja.getId());
 			loja.setSenha(lojaExistente.getSenha());
 		} else {
 			loja.setSenha(encoder.encode(loja.getSenha()));

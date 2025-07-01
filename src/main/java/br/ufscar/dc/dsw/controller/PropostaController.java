@@ -28,7 +28,6 @@ import br.ufscar.dc.dsw.domain.Proposta;
 import br.ufscar.dc.dsw.domain.Veiculo;
 import br.ufscar.dc.dsw.domain.Cliente;
 import br.ufscar.dc.dsw.domain.Loja;
-import br.ufscar.dc.dsw.security.ClienteDetails;
 import br.ufscar.dc.dsw.service.spec.IPropostaService;
 import br.ufscar.dc.dsw.service.spec.IVeiculoService;
 

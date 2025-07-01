@@ -1,5 +1,6 @@
 package br.ufscar.dc.dsw.controller;
 
+import br.ufscar.dc.dsw.service.spec.IUsuarioService;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import br.ufscar.dc.dsw.service.spec.IClienteService;
 public class ClientePublicController {
 
 	@Autowired
-	private IClienteService service;
+	private IUsuarioService service;
 
 	@Autowired
 	private BCryptPasswordEncoder encoder;

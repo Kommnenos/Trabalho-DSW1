@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.domain.Cliente;
 import br.ufscar.dc.dsw.service.spec.IClienteService;
+import br.ufscar.dc.dsw.service.spec.IUsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ClienteAdminController {
 
 	@Autowired
-	private IClienteService service;
+	private IUsuarioService service;
 
 	@Autowired
 	private BCryptPasswordEncoder encoder;
@@ -78,7 +79,7 @@ public class ClienteAdminController {
 		}
 
 		if (cliente.getSenha() == null || cliente.getSenha().isEmpty()) {
-			Cliente clienteExistente = service.buscarPorId(cliente.getId());
+			Cliente clienteExistente = (Cliente) service.buscarPorId(cliente.getId());
 			cliente.setSenha(clienteExistente.getSenha());
 		} else {
 			cliente.setSenha(encoder.encode(cliente.getSenha()));
