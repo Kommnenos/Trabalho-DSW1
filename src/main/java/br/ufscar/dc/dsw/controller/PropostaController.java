@@ -131,6 +131,16 @@ public class PropostaController {
     public String aceitar(@PathVariable("id") Long id, RedirectAttributes attr) throws UnsupportedEncodingException {
         Proposta proposta = service.buscarPorId(id);
         if(proposta.getStatus().equals(StatusProposta.ABERTO)) {
+
+            //Rejeitando as demais propostas
+            List<Proposta> propostas =  service.buscarTodosPorVeiculo(proposta.getVeiculo());
+            for (Proposta p : propostas) {
+                if(p.getId().longValue() != proposta.getId().longValue()){ // se não for a proposta que está sendo aceita
+                    p.setStatus(StatusProposta.NAO_ACEITO);
+                    service.salvar(p);
+                }
+            }
+            
             proposta.setStatus(StatusProposta.ACEITO);
             service.salvar(proposta);
             attr.addFlashAttribute("success", "proposta.aceitar.success");

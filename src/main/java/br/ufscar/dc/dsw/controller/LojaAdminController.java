@@ -6,6 +6,7 @@ import br.ufscar.dc.dsw.service.spec.ILojaService;
 import br.ufscar.dc.dsw.service.spec.IUsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -61,7 +62,6 @@ public class LojaAdminController {
 
 	@PostMapping("/editar")
 	public String editar(@Valid Loja loja, BindingResult result, RedirectAttributes attr) {
-
 		if (result.hasErrors()) {
 			boolean errosPermitidos = true;
 
@@ -86,19 +86,20 @@ public class LojaAdminController {
 		}
 
 		service.salvar(loja);
-		attr.addFlashAttribute("success", "Loja editada com sucesso.");
+		attr.addFlashAttribute("success", "loja.edit.success");
 		return "redirect:/admin/loja/listar";
 	}
 
 
 	@GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, ModelMap model) {
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		if (service.lojaTemVeiculos(id)) {
-			model.addAttribute("fail", "loja.delete.fail");
+			attr.addFlashAttribute("fail", "loja.delete.fail");
 		} else {
 			service.excluir(id);
-			model.addAttribute("success", "loja.delete.sucess");
+			attr.addFlashAttribute("success", "loja.delete.success");
 		}
-		return listar(model);
+		return "redirect:/admin/loja/listar";
 	}
+
 }

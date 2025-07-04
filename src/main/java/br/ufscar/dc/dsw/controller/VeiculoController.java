@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.ufscar.dc.dsw.domain.ImagemVeiculo;
 import br.ufscar.dc.dsw.security.UsuarioDetails;
+import br.ufscar.dc.dsw.service.impl.PropostaService;
 import jakarta.validation.Valid;
 import java.io.IOException;
 
@@ -38,6 +39,8 @@ public class VeiculoController {
 
 	@Autowired
 	private IVeiculoService veiculoService;
+    @Autowired
+    private PropostaService propostaService;
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Veiculo veiculo) {
@@ -71,10 +74,10 @@ public class VeiculoController {
 		List<Veiculo> veiculos;
 
 		if (modelo == null || modelo.isBlank()) {
-			veiculos = veiculoService.buscarTodos();
+			veiculos = veiculoService.buscarTodosSemPropostaAceita();
 		} else {
 			modelo = modelo.replaceAll("\\s+$", ""); //removendo espaços a direita do ultimo caractere da string usada pra filtrar
-			veiculos = veiculoService.buscarTodosPorModelo(modelo);
+			veiculos = veiculoService.buscarTodosPorModeloSemPropostaAceita(modelo);
 		}
 
 		model.addAttribute("veiculos", veiculos);
@@ -162,8 +165,15 @@ public class VeiculoController {
 
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
-		veiculoService.excluir(id);
-		attr.addFlashAttribute("success", "veiculo.delete.success");
+		Veiculo veiculo = veiculoService.buscarPorId(id);
+		if(propostaService.temPropostaAbertaParaVeiculo(veiculo)) {
+			attr.addFlashAttribute("fail", "veiculo.delete.fail");
+		}
+		else{
+			veiculoService.excluir(id);
+			attr.addFlashAttribute("success", "veiculo.delete.success");
+		}
+
 		return "redirect:/veiculo/listarVeiculosLoja";
 	}
 

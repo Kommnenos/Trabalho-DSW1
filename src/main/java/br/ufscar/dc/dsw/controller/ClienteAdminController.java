@@ -1,6 +1,7 @@
 package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.domain.Cliente;
+import br.ufscar.dc.dsw.service.impl.PropostaService;
 import br.ufscar.dc.dsw.service.spec.IClienteService;
 import br.ufscar.dc.dsw.service.spec.IUsuarioService;
 import jakarta.validation.Valid;
@@ -25,6 +26,8 @@ public class ClienteAdminController {
 
 	@Autowired
 	private BCryptPasswordEncoder encoder;
+    @Autowired
+    private PropostaService propostaService;
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Cliente cliente) {
@@ -49,7 +52,7 @@ public class ClienteAdminController {
 		cliente.setSenha(encoder.encode(cliente.getSenha()));
 		cliente.setEnabled(true);
 		service.salvar(cliente);
-		attr.addFlashAttribute("success", "Cliente inserido com sucesso.");
+		attr.addFlashAttribute("success", "cliente.create.success");
 		return "redirect:/admin/cliente/listar";
 	}
 
@@ -86,15 +89,23 @@ public class ClienteAdminController {
 		}
 
 		service.salvar(cliente);
-		attr.addFlashAttribute("success", "Cliente editado com sucesso.");
+		attr.addFlashAttribute("success", "cliente.edit.success");
 		return "redirect:/admin/cliente/listar";
 	}
 
 
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, ModelMap model) {
-		service.excluir(id);
-		model.addAttribute("success", "Cliente excluído com sucesso.");
+		Cliente cliente = (Cliente) service.buscarPorId(id);
+		if(propostaService.temPropostaAbertaParaCliente(cliente)) {
+			model.addAttribute("fail", "cliente.delete.fail");
+		}
+		else{
+			propostaService.excluirTodosPorCliente(cliente);
+			service.excluir(id);
+			model.addAttribute("success", "cliente.delete.success");
+		}
+
 		return listar(model);
 	}
 }
