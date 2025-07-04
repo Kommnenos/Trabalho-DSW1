@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
-import br.ufscar.dc.dsw.security.ClienteDetailsServiceImpl;
 import br.ufscar.dc.dsw.security.UsuarioDetailsServiceImpl;
 
 @Configuration

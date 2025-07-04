@@ -1,6 +1,8 @@
 package br.ufscar.dc.dsw.service.impl;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import br.ufscar.dc.dsw.dao.IPropostaDAO;
 import br.ufscar.dc.dsw.domain.Proposta;
@@ -65,6 +67,23 @@ public class VeiculoService implements IVeiculoService {
 		return dao.findAllByLojaIdAndModeloContainingIgnoreCase(lojaId, modelo);
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<Veiculo> buscarTodosSemPropostaAceita(){
+		return dao.findAllVeiculosSemPropostaAceita();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Veiculo> buscarTodosPorModeloSemPropostaAceita(String modelo){
+		return dao.findAllVeiculosSemPropostaAceita().stream().filter(veiculo -> veiculo.getModelo().equals(modelo)).collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Veiculo> buscarTodosPorLojaEModeloSemPropostaAceita(Long lojaId, String modelo){
+		return dao.findAllVeiculosSemPropostaAceita().stream().filter(veiculo -> veiculo.getModelo().equalsIgnoreCase(modelo)).filter(veiculo -> Objects.equals(veiculo.getLoja().getId(), lojaId)).collect(Collectors.toList());
+	}
 
 
 }

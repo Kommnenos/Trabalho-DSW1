@@ -3,8 +3,10 @@ package br.ufscar.dc.dsw.controller;
 import br.ufscar.dc.dsw.domain.Cliente;
 import br.ufscar.dc.dsw.domain.Loja;
 import br.ufscar.dc.dsw.service.spec.ILojaService;
+import br.ufscar.dc.dsw.service.spec.IUsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,7 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class LojaAdminController {
 	
 	@Autowired
-	private ILojaService service;
+	private IUsuarioService service;
 
 	@Autowired
 	private BCryptPasswordEncoder encoder;
@@ -34,7 +36,7 @@ public class LojaAdminController {
 	
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
-		model.addAttribute("lojas",service.buscarTodos());
+		model.addAttribute("lojas",service.buscarTodosLojas());
 		return "loja/lista";
 	}
 	
@@ -60,7 +62,6 @@ public class LojaAdminController {
 
 	@PostMapping("/editar")
 	public String editar(@Valid Loja loja, BindingResult result, RedirectAttributes attr) {
-
 		if (result.hasErrors()) {
 			boolean errosPermitidos = true;
 
@@ -78,26 +79,27 @@ public class LojaAdminController {
 		}
 
 		if (loja.getSenha() == null || loja.getSenha().isEmpty()) {
-			Loja lojaExistente = service.buscarPorId(loja.getId());
+			Loja lojaExistente = (Loja) service.buscarPorId(loja.getId());
 			loja.setSenha(lojaExistente.getSenha());
 		} else {
 			loja.setSenha(encoder.encode(loja.getSenha()));
 		}
 
 		service.salvar(loja);
-		attr.addFlashAttribute("success", "Loja editada com sucesso.");
+		attr.addFlashAttribute("success", "loja.edit.success");
 		return "redirect:/admin/loja/listar";
 	}
 
 
 	@GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, ModelMap model) {
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		if (service.lojaTemVeiculos(id)) {
-			model.addAttribute("fail", "loja.delete.fail");
+			attr.addFlashAttribute("fail", "loja.delete.fail");
 		} else {
 			service.excluir(id);
-			model.addAttribute("success", "loja.delete.sucess");
+			attr.addFlashAttribute("success", "loja.delete.success");
 		}
-		return listar(model);
+		return "redirect:/admin/loja/listar";
 	}
+
 }
