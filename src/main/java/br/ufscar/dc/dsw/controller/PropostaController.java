@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 
 import br.ufscar.dc.dsw.domain.StatusProposta;
@@ -72,8 +73,8 @@ public class PropostaController {
 
     @GetMapping("/loja/listar")
     public String listarRecebidas(ModelMap model) {
-
         List<Proposta> propostasRecebidas = service.buscarTodosPorLoja(getLoja());
+        propostasRecebidas.sort(Comparator.comparing(p -> p.getVeiculo().getId()));
         model.addAttribute("propostas", propostasRecebidas);
         return "proposta/lista";
     }
@@ -140,7 +141,7 @@ public class PropostaController {
                     service.salvar(p);
                 }
             }
-            
+
             proposta.setStatus(StatusProposta.ACEITO);
             service.salvar(proposta);
             attr.addFlashAttribute("success", "proposta.aceitar.success");
