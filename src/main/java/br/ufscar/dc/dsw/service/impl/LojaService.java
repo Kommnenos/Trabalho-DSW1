@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.ufscar.dc.dsw.dao.ILojaDAO;
+import br.ufscar.dc.dsw.dao.IUsuarioDAO;
 import br.ufscar.dc.dsw.domain.Loja;
 import br.ufscar.dc.dsw.service.spec.ILojaService;
 
@@ -15,7 +15,7 @@ import br.ufscar.dc.dsw.service.spec.ILojaService;
 public class LojaService implements ILojaService {
 
 	@Autowired
-	ILojaDAO dao;
+	IUsuarioDAO dao;
 	
 	public void salvar(Loja loja) {
 		dao.save(loja);
@@ -27,17 +27,18 @@ public class LojaService implements ILojaService {
 
 	@Transactional(readOnly = true)
 	public Loja buscarPorId(Long id) {
-		return dao.findById(id.longValue());
+		return (Loja) dao.findById(id.longValue());
 	}
 
 	@Transactional(readOnly = true)
 	public List<Loja> buscarTodos() {
-		return dao.findAll();
+		return dao.findAllLojas();
 	}
 	
 	@Transactional(readOnly = true)
 	public boolean lojaTemVeiculos(Long id) {
-		return !dao.findById(id.longValue()).getVeiculos().isEmpty(); 
+		Loja loja = buscarPorId(id);
+		return !loja.getVeiculos().isEmpty();
 	}
 
 }

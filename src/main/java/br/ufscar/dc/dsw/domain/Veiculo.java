@@ -51,13 +51,12 @@ public class Veiculo extends AbstractEntity<Long> {
 	@JoinColumn(name = "loja_id")
 	private Loja loja;
 
+	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.EAGER)
+	private List<ImagemVeiculo> imagens = new ArrayList<>();
+
+
 	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.REMOVE)
 	private List<Proposta> propostas;
-
-	@Lob
-	@Basic
-	@Column(length = 10485760) // 1MB
-	private byte[] imagem;
 
 	public String getPlaca() {
 		return placa;
@@ -127,11 +126,15 @@ public class Veiculo extends AbstractEntity<Long> {
 		return loja.getCNPJ();
 	}
 
-	public byte[] getImagem() {
-		return imagem;
+	public List<ImagemVeiculo> getImagens() {
+		return imagens;
 	}
 
-	public void setImagem(byte[] imagem) {
-		this.imagem = imagem;
+	public void setImagens(List<ImagemVeiculo> imagens) {
+		this.imagens = imagens;
+	}
+
+	public boolean temImagens(){
+		return imagens != null && imagens.size() > 0;
 	}
 }

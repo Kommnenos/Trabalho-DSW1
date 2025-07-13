@@ -22,4 +22,12 @@ public interface IVeiculoDAO extends CrudRepository<Veiculo, Long>{
 
 	@Query("SELECT v FROM Veiculo v WHERE v.loja.id = :lojaId")
 	public List<Veiculo> getVeiculoByLoja(@Param("lojaId") Long lojaId);
+
+	List<Veiculo> findAllByModeloContainingIgnoreCase(String modelo);
+	List<Veiculo> findAllByLojaIdAndModeloContainingIgnoreCase(Long lojaId, String modelo);
+
+	@Query("SELECT v FROM Veiculo v WHERE NOT EXISTS " + "(SELECT p FROM Proposta p WHERE p.veiculo = v AND p.status = 'ACEITO')")
+	List<Veiculo> findAllVeiculosSemPropostaAceita();
+
+
 }
