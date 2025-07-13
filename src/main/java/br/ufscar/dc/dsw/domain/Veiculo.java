@@ -137,4 +137,12 @@ public class Veiculo extends AbstractEntity<Long> {
 	public boolean temImagens(){
 		return imagens != null && imagens.size() > 0;
 	}
+
+	public List<Proposta> getPropostas() {
+		return propostas;
+	}
+
+	public void setPropostas(List<Proposta> propostas) {
+		this.propostas = propostas;
+	}
 }
