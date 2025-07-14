@@ -21,11 +21,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import br.ufscar.dc.dsw.service.spec.ILojaService;
 import br.ufscar.dc.dsw.domain.Veiculo;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @CrossOrigin
 @RestController
@@ -57,6 +52,7 @@ public class LojaRestController {
         loja.setEnabled((Boolean) json.get("enabled"));
         loja.setDescricao((String) json.get("descricao"));
         loja.setSenha((String) json.get("senha"));
+        loja.setCNPJ((String) json.get("cnpj"));
     }
 
 
@@ -65,11 +61,9 @@ public class LojaRestController {
     public ResponseEntity<List<Loja>> lista() {
         List<Loja> lista = service.buscarTodos();
         for (Loja loja : lista) {
-            // Initialize the collection to prevent lazy loading issues
             if (loja.getVeiculos() != null) {
-                loja.getVeiculos().size(); // Force initialization
+                loja.getVeiculos().size();
                 for (Veiculo veiculo : loja.getVeiculos()) {
-                    // Clear any BLOB data references
                     if (veiculo.getImagens() != null) {
                         veiculo.getImagens().forEach(img -> img.setDados(null));
                     }
