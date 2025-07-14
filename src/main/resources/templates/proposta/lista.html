@@ -53,7 +53,7 @@
                     <td th:text="${proposta.veiculo.loja.nome}" sec:authorize="hasRole('USER')"></td>
                     <td th:text="${proposta.cliente.email}" sec:authorize="hasRole('LOJA')"></td>
                     <td th:text="${proposta.status}"></td>
-                    <li th:if="${proposta.status.toString() != 'ACEITO'}">
+                    <div th:if="${proposta.status.toString() != 'ACEITO'}">
                         <td sec:authorize="hasRole('USER')">
                             <a class="btn btn-danger btn-sm"
                                th:href="@{/proposta/excluir/{id}(id=${proposta.id})}"
@@ -61,7 +61,7 @@
                                 <i class="oi oi-trash"></i>
                             </a>
                         </td>
-                    </li>
+                    </div>
                     <td sec:authorize="hasRole('LOJA')">
                         <a class="btn btn-success btn-sm"
                            th:if="${proposta.status.name() == 'ABERTO'}"
