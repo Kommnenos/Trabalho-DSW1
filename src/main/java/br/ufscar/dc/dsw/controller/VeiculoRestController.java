@@ -1,11 +1,8 @@
 package br.ufscar.dc.dsw.controller;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.math.BigDecimal;
 import java.util.List;
-
-import br.ufscar.dc.dsw.domain.ImagemVeiculo;
 import br.ufscar.dc.dsw.domain.Loja;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +79,7 @@ public class VeiculoRestController {
     }
 
 
-    @GetMapping(path = "/veiculos")
+    @GetMapping(path = "/api/veiculos")
     public ResponseEntity<List<Veiculo>> lista() {
         List<Veiculo> lista = service.buscarTodos();
         if (lista.isEmpty()) {
@@ -91,7 +88,7 @@ public class VeiculoRestController {
         return ResponseEntity.ok(lista);
     }
 
-    @GetMapping(path = "/veiculos/{id}")
+    @GetMapping(path = "/api/veiculos/{id}")
     public ResponseEntity<Veiculo> lista(@PathVariable("id") long id) {
         Veiculo veiculo = service.buscarPorId(id);
         if (veiculo == null) {
@@ -100,7 +97,7 @@ public class VeiculoRestController {
         return ResponseEntity.ok(veiculo);
     }
 
-    @PostMapping(path = "/veiculos")
+    @PostMapping(path = "/api/veiculos")
     @ResponseBody
     public ResponseEntity<Veiculo> cria(@RequestBody JSONObject json) {
         try {
@@ -118,7 +115,7 @@ public class VeiculoRestController {
         }
     }
 
-    @PutMapping(path = "/veiculos/{id}")
+    @PutMapping(path = "/api/veiculos/{id}")
     public ResponseEntity<Veiculo> atualiza(@PathVariable("id") long id, @RequestBody JSONObject json) {
         try {
             if (isJSONValid(json.toString())) {
@@ -138,7 +135,7 @@ public class VeiculoRestController {
         }
     }
 
-    @DeleteMapping(path = "/veiculos/{id}")
+    @DeleteMapping(path = "/api/veiculos/{id}")
     public ResponseEntity<Boolean> remove(@PathVariable("id") long id) {
 
         Veiculo veiculo = service.buscarPorId(id);

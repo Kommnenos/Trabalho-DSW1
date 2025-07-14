@@ -53,7 +53,7 @@ public class LojaRestController {
     }
 
 
-    @GetMapping(path = "/lojas")
+    @GetMapping(path = "/api/lojas")
     public ResponseEntity<List<Loja>> lista() {
         List<Loja> lista = service.buscarTodos();
         if (lista.isEmpty()) {
@@ -62,7 +62,7 @@ public class LojaRestController {
         return ResponseEntity.ok(lista);
     }
 
-    @GetMapping(path = "/lojas/{id}")
+    @GetMapping(path = "/api/lojas/{id}")
     public ResponseEntity<Loja> lista(@PathVariable("id") long id) {
         Loja loja = service.buscarPorId(id);
         if (loja == null) {
@@ -71,7 +71,7 @@ public class LojaRestController {
         return ResponseEntity.ok(loja);
     }
 
-    @PostMapping(path = "/lojas")
+    @PostMapping(path = "/api/lojas")
     @ResponseBody
     public ResponseEntity<Loja> cria(@RequestBody JSONObject json) {
         try {
@@ -89,7 +89,7 @@ public class LojaRestController {
         }
     }
 
-    @PutMapping(path = "/lojas/{id}")
+    @PutMapping(path = "/api/lojas/{id}")
     public ResponseEntity<Loja> atualiza(@PathVariable("id") long id, @RequestBody JSONObject json) {
         try {
             if (isJSONValid(json.toString())) {
@@ -109,7 +109,7 @@ public class LojaRestController {
         }
     }
 
-    @DeleteMapping(path = "/lojas/{id}")
+    @DeleteMapping(path = "/api/lojas/{id}")
     public ResponseEntity<Boolean> remove(@PathVariable("id") long id) {
 
         Loja loja = service.buscarPorId(id);
