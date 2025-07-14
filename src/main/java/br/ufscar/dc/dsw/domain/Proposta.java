@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.domain;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
@@ -23,6 +24,7 @@ public class Proposta extends AbstractEntity<Long>{
     @NotNull(message = "{NotNull.proposta.veiculo}")
     @ManyToOne
     @JoinColumn(name = "veiculo_id")
+    @JsonBackReference("veiculo-propostas")
     private Veiculo veiculo;
 
     @NotNull

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -54,10 +55,12 @@ public class Veiculo extends AbstractEntity<Long> {
 	private Loja loja;
 
 	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.EAGER)
+	@JsonManagedReference("veiculo-imagens")
 	private List<ImagemVeiculo> imagens = new ArrayList<>();
 
 
 	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.REMOVE)
+	@JsonManagedReference("veiculo-propostas")
 	private List<Proposta> propostas;
 
 	public String getPlaca() {

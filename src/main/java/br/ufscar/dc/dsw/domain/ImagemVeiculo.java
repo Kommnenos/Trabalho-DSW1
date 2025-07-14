@@ -1,5 +1,6 @@
 package br.ufscar.dc.dsw.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class ImagemVeiculo extends AbstractEntity<Long> {
 
     @ManyToOne
     @JoinColumn(name = "veiculo_id", nullable = false)
+    @JsonBackReference("veiculo-imagens")
     private Veiculo veiculo;
 
 
