@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -14,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "Veiculo")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Veiculo extends AbstractEntity<Long> {
 
 	@NotBlank(message = "{NotBlank.veiculo.placa}")
@@ -56,6 +59,7 @@ public class Veiculo extends AbstractEntity<Long> {
 
 	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.EAGER)
 	@JsonManagedReference("veiculo-imagens")
+	@JsonIgnore
 	private List<ImagemVeiculo> imagens = new ArrayList<>();
 
 

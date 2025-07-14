@@ -1,6 +1,7 @@
 package br.ufscar.dc.dsw.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,6 +9,7 @@ import jakarta.persistence.*;
 public class ImagemVeiculo extends AbstractEntity<Long> {
     @Lob
     @Column(nullable = false)
+    @JsonIgnore
     private byte[] dados;
 
     @ManyToOne
