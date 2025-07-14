@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @SuppressWarnings("serial")
 @Entity
@@ -49,6 +50,7 @@ public class Veiculo extends AbstractEntity<Long> {
 	@NotNull(message = "{NotNull.veiculo.loja}")
 	@ManyToOne
 	@JoinColumn(name = "loja_id")
+	@JsonBackReference
 	private Loja loja;
 
 	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true,  fetch = FetchType.EAGER)

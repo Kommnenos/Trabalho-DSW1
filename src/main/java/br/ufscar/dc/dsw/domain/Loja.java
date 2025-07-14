@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import br.ufscar.dc.dsw.validation.UniqueCNPJ;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @SuppressWarnings("serial")
 @Entity
@@ -29,6 +30,7 @@ public class Loja extends Usuario {
 	private boolean enabled;
 
 	@OneToMany(mappedBy = "loja")
+	@JsonManagedReference
 	private List<Veiculo> veiculos;
 
 
