@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 import br.ufscar.dc.dsw.domain.Proposta;
 import br.ufscar.dc.dsw.domain.Veiculo;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,11 +20,18 @@ import br.ufscar.dc.dsw.domain.StatusProposta;
 import br.ufscar.dc.dsw.domain.Cliente;
 import br.ufscar.dc.dsw.service.spec.IClienteService;
 import br.ufscar.dc.dsw.service.spec.IVeiculoService;
+import org.springframework.web.bind.annotation.RestController;
 
+
+@CrossOrigin
+@RestController
 public class PropostaRestController {
 
+    @Autowired
     private IPropostaService service;
+    @Autowired
     private IClienteService clienteService;
+    @Autowired
     private IVeiculoService veiculoService;
 
     private boolean isJSONValid(String jsonInString) {
