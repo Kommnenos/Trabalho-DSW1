@@ -22,20 +22,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "Cliente")
-public class Cliente extends AbstractEntity<Long> {
-
-	@UniqueEmail
-	@NotBlank (message = "{NotBlank.email}")
-	@Column(nullable = false, unique = true, length= 60)
-	private String email;
-
-	@NotBlank (message = "{NotBlank.senha}")
-	@Column(nullable = false, length= 64)
-	private String senha;
-
-	@NotBlank (message = "{NotBlank.cliente.nome}")
-	@Column(nullable = false, length= 60)
-	private String nome;
+public class Cliente extends Usuario {
 
 	@UniqueCPF
 	@NotBlank (message = "{NotBlank.cliente.CPF}")
@@ -52,39 +39,11 @@ public class Cliente extends AbstractEntity<Long> {
 	@Column
 	private LocalDate dataNasc;
 
-	@NotBlank
-	@Column(nullable = false, length = 10)
-	private String role;
-	
 	@Column
     private boolean enabled;
 
 	public Cliente() {
-		this.role = "ROLE_USER";
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+		this.setRole("ROLE_USER");
 	}
 
 	public String getCPF() {
@@ -117,14 +76,6 @@ public class Cliente extends AbstractEntity<Long> {
 
 	public void setDataNasc(LocalDate dataNasc) {
 		this.dataNasc = dataNasc;
-	}
-	
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
 	}
 
 	public boolean isEnabled() {
