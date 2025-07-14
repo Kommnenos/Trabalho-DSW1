@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import br.ufscar.dc.dsw.service.spec.ILojaService;
+import br.ufscar.dc.dsw.domain.Veiculo;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @CrossOrigin
 @RestController
@@ -54,8 +61,21 @@ public class LojaRestController {
 
 
     @GetMapping(path = "/api/lojas")
+    @Transactional(readOnly = true)
     public ResponseEntity<List<Loja>> lista() {
         List<Loja> lista = service.buscarTodos();
+        for (Loja loja : lista) {
+            // Initialize the collection to prevent lazy loading issues
+            if (loja.getVeiculos() != null) {
+                loja.getVeiculos().size(); // Force initialization
+                for (Veiculo veiculo : loja.getVeiculos()) {
+                    // Clear any BLOB data references
+                    if (veiculo.getImagens() != null) {
+                        veiculo.getImagens().forEach(img -> img.setDados(null));
+                    }
+                }
+            }
+        }
         if (lista.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

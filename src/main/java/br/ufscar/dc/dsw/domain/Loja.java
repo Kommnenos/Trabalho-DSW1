@@ -3,16 +3,19 @@ package br.ufscar.dc.dsw.domain;
 import java.util.List;
 
 import br.ufscar.dc.dsw.validation.UniqueEmail;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import br.ufscar.dc.dsw.validation.UniqueCNPJ;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "Loja")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Loja extends Usuario {
 
 	@UniqueCNPJ (message = "{Unique.loja.CNPJ}")
