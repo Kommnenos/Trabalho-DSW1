@@ -1,26 +1,28 @@
 # Trabalho-DSW1 - DCMotors
 
-Proposta: Criacao de um sistema de venda de automoveis, possuido operacoes relativas a clientes, administradores e lojas.
+Proposta: Criação de um sistema de venda de automóveis, possuindo operações relativas a clientes, administradores e lojas.
 
-# Descricao:
-Sistema que engloba lojas, clientes e administradores. Possuindo fluxos especificos para cada um dos papeis disponiveis.
+# Descrição:
+Sistema que engloba lojas, clientes e administradores. Possuindo fluxos específicos para cada um dos papéis disponíveis.
 
-As lojas podem cadastrar excluir e editar veiculos
+As lojas podem cadastrar excluir e editar veículos
 
-Os clientes podem visualizar e fazer prostas de aquisicao dos veiculos veiculos
+Os clientes podem visualizar e fazer propostas de aquisição dos veículos 
 
 Os administradores podem cadastrar, editar ou excluir lojas ou clientes
 
-# Aquitetura - MVC:
-Pastas dividias em modelo, visao e controlador.
+# Arquitetura - MVC:
+Pastas divididas em modelo, visão e controlador.
 
-# Divisao de tarefas:
-- Lucas Gabriel Velloso: Criacao da classe de Veiculo, Das entidade abstrata, fluxo de upload de arquivos.
-- Gabriel Henrique Rodrigues: Criacao da classe de Proposta, Cliente, fluxo de login, autenticacao e criacao de propostas
-- Pedro Lealdini: Criacao da interface inicial, homepage, fluxo de cadastro e listagem de veiculos e disparo de email.
+# Divisão de tarefas:
+- Lucas Gabriel Velloso: Criação da classe de Veiculo, Das entidade abstrata, fluxo de upload de arquivos.
+- Gabriel Henrique Rodrigues: Criação da classe de Proposta, Cliente, fluxo de login, autenticação e criação de propostas
+- Pedro Lealdini: Criação da interface inicial, homepage, fluxo de cadastro, listagem de veículos e disparo de email.
 
-# Comando para execucao:
- - mvn spring-boot:run
+# Passos para execução:
+ - Criar um database no PostgreSQL com o nome "DCMotors"
+ - Configurar o arquivo application.properties com usuário e senha corretos do PostgreSQL
+ - Executar 'mvn spring-boot:run' na raiz do projeto
 
-# Observacoes:
-- Implementados todos os pontos do arquivo de requisitos, com excessao do envio de contrapropostas e link da reuniao (ainda em desenvolvimento)
+# Observação:
+- Implementados todos os pontos do arquivo de requisitos, com exceção do envio de contrapropostas e link da reunião (ainda em desenvolvimento)

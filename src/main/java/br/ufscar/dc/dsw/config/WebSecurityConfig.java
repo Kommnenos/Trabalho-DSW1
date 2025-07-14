@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
-import br.ufscar.dc.dsw.security.ClienteDetailsServiceImpl;
 import br.ufscar.dc.dsw.security.UsuarioDetailsServiceImpl;
 
 @Configuration
@@ -53,14 +52,14 @@ public class WebSecurityConfig {
 						.requestMatchers("/css/**", "/image/**", "/webjars/**").permitAll()
 						.requestMatchers("/cliente/cadastrar", "/cliente/salvar").permitAll()
 						.requestMatchers("/loja/cadastrar", "/loja/salvar").permitAll()
-						.requestMatchers( "/veiculo/listarTodos").permitAll()
+						.requestMatchers( "/veiculo/listarTodos", "/veiculo/download/**", "/veiculo/imagens/**").permitAll()
 						.requestMatchers("/admin/**" ).hasRole("ADMIN")
 						.requestMatchers("/veiculo/cadastrar", "/veiculo/salvar" ).hasRole("LOJA")
 						.requestMatchers("/veiculo/**").hasRole("LOJA")
 						.requestMatchers("/proposta/listar").hasAnyRole("USER","LOJA")
 						.requestMatchers("/proposta/cadastrar/**", "/proposta/cliente/**").hasRole("USER")
-						.requestMatchers("/proposta/aceitar/**").hasRole("LOJA")
-						.requestMatchers("/proposta/loja/**").hasRole("LOJA")
+						.requestMatchers("/proposta/aceitar/**", "/proposta/reuniao/**", "/proposta/contraproposta/**").hasRole("LOJA")
+						.requestMatchers("/proposta/loja/**", "/proposta/rejeitar/**", "/proposta/aceitar/**").hasRole("LOJA")
 						.requestMatchers("/proposta/**" ).hasRole("USER")
 
 						.anyRequest().authenticated())

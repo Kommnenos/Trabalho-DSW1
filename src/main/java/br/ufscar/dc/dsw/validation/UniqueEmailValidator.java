@@ -6,30 +6,28 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.ufscar.dc.dsw.dao.ILojaDAO;
-import br.ufscar.dc.dsw.dao.IClienteDAO;
+import br.ufscar.dc.dsw.dao.IUsuarioDAO;
+
 
 
 @Component
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
 
     @Autowired
-    private ILojaDAO lojaDao;
+    private IUsuarioDAO dao;
 
-    @Autowired
-    private IClienteDAO clienteDao;
+
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
 
-        if (lojaDao == null || clienteDao == null || email == null) {
+        if (dao == null || email == null) {
             return true;
         }
 
-        boolean emailExisteLoja = lojaDao.getLojaByEmail(email) != null;
-        boolean emailExisteCliente = clienteDao.getClienteByEmail(email) != null;
+        boolean emailExisteUsuario = dao.getUsuarioByEmail(email) != null;
 
-        return !(emailExisteLoja || emailExisteCliente);
+        return !(emailExisteUsuario);
 
     }
 }

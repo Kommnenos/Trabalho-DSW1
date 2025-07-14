@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body>
+<section class="container" layout:fragment="corpo">
+    <h3 th:text="#{button.enviar.contraproposta.label}"></h3>
+
+    <form th:action="@{/proposta/contraproposta/salvar}" th:object="${proposta}" method="post">
+
+        <div class="form-group">
+            <label th:text="#{proposta.contraproposta.valor.label}" for="valor"></label>
+            <input type="number" step="0.01" id="valor" th:field="*{valorContraproposta}" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label th:text="#{proposta.contraproposta.condicoesPagamento.label}" for="condicoes"></label>
+            <textarea th:field="*{condicoesContraproposta}" id="condicoes" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button th:text="#{button.enviar}" type="submit" class="btn btn-primary"></button>
+
+        <input type="hidden" th:field="*{id}"/>
+    </form>
+</section>
+</body>
+</html>
