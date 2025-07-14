@@ -15,9 +15,9 @@ Os administradores podem cadastrar, editar ou excluir lojas ou clientes
 Pastas divididas em modelo, visão e controlador.
 
 # Divisão de tarefas:
-- Lucas Gabriel Velloso: Criação da classe de Veiculo, Das entidade abstrata, fluxo de upload de arquivos.
-- Gabriel Henrique Rodrigues: Criação da classe de Proposta, Cliente, fluxo de login, autenticação e criação de propostas
-- Pedro Lealdini: Criação da interface inicial, homepage, fluxo de cadastro, listagem de veículos e disparo de email.
+- Lucas Gabriel Velloso: Criação da classe de Veiculo, Das entidade abstrata, fluxo de upload de arquivos e ajuste de bugs.
+- Gabriel Henrique Rodrigues: Criação da classe de Proposta, Cliente, fluxo de login, autenticação, criação de propostas e ajuste de bugs.
+- Pedro Lealdini: Criação da interface inicial, homepage, fluxo de cadastro, listagem de veículos e disparo de email, implementação do react e ajuste de bugs.
 
 # Passos para execução:
  - Criar um database no PostgreSQL com o nome "DCMotors"
