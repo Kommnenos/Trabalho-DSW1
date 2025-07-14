@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.domain;
 import java.util.List;
 
 import br.ufscar.dc.dsw.validation.UniqueEmail;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +35,7 @@ public class Loja extends Usuario {
 
 	@OneToMany(mappedBy = "loja")
 	@JsonManagedReference
+	@JsonIgnore
 	private List<Veiculo> veiculos;
 
 

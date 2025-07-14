@@ -52,6 +52,7 @@ public class LojaRestController {
         loja.setEnabled((Boolean) json.get("enabled"));
         loja.setDescricao((String) json.get("descricao"));
         loja.setSenha((String) json.get("senha"));
+        loja.setCNPJ((String) json.get("cnpj"));
     }
 
 

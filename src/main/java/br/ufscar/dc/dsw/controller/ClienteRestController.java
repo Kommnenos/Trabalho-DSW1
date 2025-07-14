@@ -53,7 +53,8 @@ public class ClienteRestController {
         cliente.setTelefone((String) json.get("telefone"));
         cliente.setSexo((String) json.get("sexo"));
         cliente.setRole((String) json.get("role"));
-        cliente.setDataNasc((LocalDate) json.get("dataNasc"));
+        String dataNascStr = (String) json.get("dataNasc");
+        cliente.setDataNasc(LocalDate.parse(dataNascStr));
         cliente.setEnabled((Boolean) json.get("enabled"));
     }
 
