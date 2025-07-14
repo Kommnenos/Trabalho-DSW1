@@ -35,7 +35,6 @@ public class Loja extends Usuario {
 
 	@OneToMany(mappedBy = "loja")
 	@JsonManagedReference
-	@JsonIgnore
 	private List<Veiculo> veiculos;
 
 

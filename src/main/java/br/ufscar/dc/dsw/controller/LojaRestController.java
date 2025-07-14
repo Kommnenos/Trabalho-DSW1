@@ -77,10 +77,19 @@ public class LojaRestController {
     }
 
     @GetMapping(path = "/api/lojas/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<Loja> lista(@PathVariable("id") long id) {
         Loja loja = service.buscarPorId(id);
         if (loja == null) {
             return ResponseEntity.notFound().build();
+        }
+        if (loja.getVeiculos() != null) {
+            loja.getVeiculos().size();
+            for (Veiculo veiculo : loja.getVeiculos()) {
+                if (veiculo.getImagens() != null) {
+                    veiculo.getImagens().forEach(img -> img.setDados(null));
+                }
+            }
         }
         return ResponseEntity.ok(loja);
     }
